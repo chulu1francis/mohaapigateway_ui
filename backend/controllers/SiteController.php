@@ -12,6 +12,11 @@ use backend\models\LoginForm;
 use backend\models\AauthUserToGroup;
 use backend\models\AauthPermToGroup;
 use backend\models\AauthPermToUser;
+use backend\models\AuditTrail;
+use backend\models\PasswordResetRequestForm;
+use yii\helpers\Json;
+use backend\models\ResetPasswordForm;
+use backend\models\ResetPasswordForm_1;
 
 /**
  * Site controller
@@ -27,10 +32,12 @@ class SiteController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'login'],
+                'only' => ['logout', 'login', 'set-password',
+                    'request-password-reset', 'reset-password'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'captcha'],
+                        'actions' => ['login', 'error', 'captcha', 'set-password',
+                            'request-password-reset', 'reset-password'],
                         'allow' => true,
                     // 'roles' => ['?'],
                     ],
@@ -122,7 +129,7 @@ class SiteController extends Controller {
                         $rights .= "," . $value;
                     }
                 }
-                
+
                 $session = Yii::$app->session;
                 $session->set('rights', $rights);
 
@@ -154,6 +161,129 @@ class SiteController extends Controller {
     public function actionLogout() {
         Yii::$app->user->logout();
         return $this->goHome();
+    }
+
+    /**
+     * Requests password reset.
+     *
+     * @return mixed
+     * @throws \yii\base\Exception
+     */
+    public function actionRequestPasswordReset() {
+        $model = new PasswordResetRequestForm();
+        if (Yii::$app->request->isAjax) {
+            $model->load(Yii::$app->request->post());
+            return Json::encode(\yii\widgets\ActiveForm::validate($model));
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+                $user = User::findOne(['email' => $model->email]);
+                if ($user) {
+                    $action = "Requested password reset";
+                    $extraData = "";
+                    AuditTrail::logTrailUser($action, $extraData, $user->id);
+                }
+                Yii::$app->session->setFlash('success', 'A reset link has been sent to your email!');
+                return $this->goHome();
+            } else {
+                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address!');
+            }
+        }
+        $this->layout = 'requestPasswordReset';
+        return $this->render('requestPasswordResetToken', [
+                    'model' => $model,
+        ]);
+    }
+
+    /**
+     * Resets password.
+     *
+     * @param string $token
+     * @return mixed
+     * @throws BadRequestHttpException
+     * @throws \yii\base\Exception
+     */
+    public function actionResetPassword1($token) {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidArgumentException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->session->setFlash('success', 'New password saved.');
+            $ath = new AuditTrail();
+            $ath->user = $user->id;
+            $ath->action = "New password saved.";
+            $ath->ip_address = Yii::$app->request->getUserIP();
+            $ath->user_agent = Yii::$app->request->getUserAgent();
+            $ath->save();
+            return $this->goHome();
+        }
+        $this->layout = 'login';
+        return $this->render('resetPassword', [
+                    'model' => $model,
+        ]);
+    }
+
+    /**
+     * @param $token
+     * @return string|\yii\web\Response
+     * @throws BadRequestHttpException
+     */
+    public function actionSetPassword($token) {
+        $user = User::findByPasswordResetTokenInactiveAccount($token);
+        if (!$user) {
+            Yii::$app->session->setFlash('error', 'Account activation token expired. Contact  support!');
+            return $this->goHome();
+        }
+
+        try {
+            $this->layout = 'setpassword';
+            $model = new \backend\models\SetPasswordForm($token);
+        } catch (Exception $e) {
+            Yii::$app->session->setFlash('error', 'Account activation token expired. Contact support!.');
+            return $this->goHome();
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            $action = "Activated account by setting the password.";
+            $extraData = "";
+            AuditTrail::logTrailUser($action, $extraData, $user->id);
+            Yii::$app->session->setFlash('success', 'Account was successfully activated. Login into your account!');
+            return $this->goHome();
+        }
+
+        return $this->render('setPassword', [
+                    'model' => $model,
+        ]);
+    }
+
+    /**
+     * @param $token
+     * @return string|\yii\web\Response
+     * @throws BadRequestHttpException
+     * @throws \yii\base\Exception
+     */
+    public function actionResetPassword($token) {
+        try {
+            $this->layout = 'resetpassword';
+            $model = new ResetPasswordForm($token);
+        } catch (Exception $e) {
+            Yii::$app->session->setFlash('error', 'Password reset token has expired. Please request another one!.');
+            return $this->goHome();
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->session->setFlash('success', 'Password was successfully reset. Sign in with your new password');
+            return $this->goHome();
+        }
+        
+        $this->layout = 'resetpassword';
+        return $this->render('resetPassword', [
+                    'model' => $model,
+        ]);
     }
 
 }

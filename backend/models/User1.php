@@ -14,185 +14,16 @@ use backend\models\AauthGroups;
 use backend\models\AauthPerm;
 use backend\models\AauthPermToGroup;
 
-/**
- * This is the model class for table "aauth_users".
- *
- * @property int $id
- * @property int $group
- * @property string $first_name
- * @property string $last_name
- * @property string|null $phone
- * @property string $email
- * @property int $active
- * @property string $auth_key
- * @property string $password_hash
- * @property string|null $password_reset_token
- * @property string|null $verification_token
- * @property string|null $ip_address
- * @property int|null $login_attempts
- * @property int|null $updated_by
- * @property int|null $created_by
- * @property int $created_at
- * @property int $updated_at
- * @property string|null $man_number
- * @property string|null $expiry_date
- * @property int $department
- * @property string $username
- * @property string|null $last_login
- * @property string|null $lms_account_created
- *
- * @property AauthGroups[] $aauthGroups
- * @property AauthGroups[] $aauthGroups0
- * @property AauthPermToGroup[] $aauthPermToGroups
- * @property AauthPermToGroup[] $aauthPermToGroups0
- * @property AauthPermToUser[] $aauthPermToUsers
- * @property AauthPermToUser[] $aauthPermToUsers0
- * @property AauthPermToUser[] $aauthPermToUsers1
- * @property AauthUserToGroup[] $aauthUserToGroups
- * @property AauthUserToGroup[] $aauthUserToGroups0
- * @property AauthUserToGroup[] $aauthUserToGroups1
- * @property AcademicIntakes[] $academicIntakes
- * @property AcademicIntakes[] $academicIntakes0
- * @property AcademicSessions[] $academicSessions
- * @property AcademicSessions[] $academicSessions0
- * @property AdmissionEligibility[] $admissionEligibilities
- * @property AdmissionEligibility[] $admissionEligibilities0
- * @property AdmissionEligibilityRequiredSubjects[] $admissionEligibilityRequiredSubjects
- * @property AdmissionEligibilityRequiredSubjects[] $admissionEligibilityRequiredSubjects0
- * @property ApplicationFeePayments[] $applicationFeePayments
- * @property ApplicationFeePayments[] $applicationFeePayments0
- * @property ApplicationFees[] $applicationFees
- * @property ApplicationFees[] $applicationFees0
- * @property ApplicationPeriodProgrames[] $applicationPeriodProgrames
- * @property ApplicationPeriodProgrames[] $applicationPeriodProgrames0
- * @property ApplicationPeriods[] $applicationPeriods
- * @property ApplicationPeriods[] $applicationPeriods0
- * @property Campuses[] $campuses
- * @property Campuses[] $campuses0
- * @property Centres[] $centres
- * @property Centres[] $centres0
- * @property Comments[] $comments
- * @property Comments[] $comments0
- * @property CourseGroupings[] $courseGroupings
- * @property CourseGroupings[] $courseGroupings0
- * @property CourseStaff[] $courseStaff
- * @property CourseStaff[] $courseStaff0
- * @property CourseStaff[] $courseStaff1
- * @property Courses[] $courses
- * @property Courses[] $courses0
- * @property Departments $department0
- * @property Departments[] $departments
- * @property Departments[] $departments0
- * @property Departments[] $departments1
- * @property Disabilities[] $disabilities
- * @property Disabilities[] $disabilities0
- * @property Districts[] $districts
- * @property Districts[] $districts0
- * @property ExaminationStructureComponentTypes[] $examinationStructureComponentTypes
- * @property ExaminationStructureComponentTypes[] $examinationStructureComponentTypes0
- * @property ExaminationStructureComponents[] $examinationStructureComponents
- * @property ExaminationStructureComponents[] $examinationStructureComponents0
- * @property ExaminationStructures[] $examinationStructures
- * @property ExaminationStructures[] $examinationStructures0
- * @property FeeCategories[] $feeCategories
- * @property FeeCategories[] $feeCategories0
- * @property FeeTypes[] $feeTypes
- * @property FeeTypes[] $feeTypes0
- * @property GradingSystemGrades[] $gradingSystemGrades
- * @property GradingSystemGrades[] $gradingSystemGrades0
- * @property GradingSystems[] $gradingSystems
- * @property GradingSystems[] $gradingSystems0
- * @property AauthGroups $group0
- * @property HostelBlocks[] $hostelBlocks
- * @property HostelBlocks[] $hostelBlocks0
- * @property Hostels[] $hostels
- * @property Hostels[] $hostels0
- * @property NationalGroupings[] $nationalGroupings
- * @property NationalGroupings[] $nationalGroupings0
- * @property Nationalities[] $nationalities
- * @property Nationalities[] $nationalities0
- * @property Offences[] $offences
- * @property Offences[] $offences0
- * @property Payments[] $payments
- * @property ProgramClasses[] $programClasses
- * @property ProgramClasses[] $programClasses0
- * @property Programs[] $programs
- * @property Programs[] $programs0
- * @property RoomProperties[] $roomProperties
- * @property RoomProperties[] $roomProperties0
- * @property RoomPropertyTypes[] $roomPropertyTypes
- * @property RoomPropertyTypes[] $roomPropertyTypes0
- * @property RoomTypes[] $roomTypes
- * @property RoomTypes[] $roomTypes0
- * @property Rooms[] $rooms
- * @property Rooms[] $rooms0
- * @property Schools[] $schools
- * @property Schools[] $schools0
- * @property SecondarySchoolSubjects[] $secondarySchoolSubjects
- * @property SecondarySchoolSubjects[] $secondarySchoolSubjects0
- * @property SecondarySchools[] $secondarySchools
- * @property SecondarySchools[] $secondarySchools0
- * @property SessionMinimumTuitionPayments[] $sessionMinimumTuitionPayments
- * @property SessionMinimumTuitionPayments[] $sessionMinimumTuitionPayments0
- * @property SessionPaymentPlans[] $sessionPaymentPlans
- * @property SessionPaymentPlans[] $sessionPaymentPlans0
- * @property SessionRegistrationPeriods[] $sessionRegistrationPeriods
- * @property SessionRegistrationPeriods[] $sessionRegistrationPeriods0
- * @property Sponsors[] $sponsors
- * @property Sponsors[] $sponsors0
- * @property SponsorshipPercentages[] $sponsorshipPercentages
- * @property SponsorshipPercentages[] $sponsorshipPercentages0
- * @property StudentComments[] $studentComments
- * @property StudentComments[] $studentComments0
- * @property StudentFiles[] $studentFiles
- * @property StudentFiles[] $studentFiles0
- * @property StudentGuardian[] $studentGuardians
- * @property StudentGuardian[] $studentGuardians0
- * @property StudentLocation[] $studentLocations
- * @property StudentLocation[] $studentLocations0
- * @property StudentOffences[] $studentOffences
- * @property StudentOffences[] $studentOffences0
- * @property StudentOffences[] $studentOffences1
- * @property StudentPreviousInstitution[] $studentPreviousInstitutions
- * @property StudentPreviousInstitution[] $studentPreviousInstitutions0
- * @property StudentProgrames[] $studentProgrames
- * @property StudentProgrames[] $studentProgrames0
- * @property StudentReferences[] $studentReferences
- * @property StudentReferences[] $studentReferences0
- * @property StudentSessionInvoices[] $studentSessionInvoices
- * @property StudentSponsors[] $studentSponsors
- * @property StudentSponsors[] $studentSponsors0
- * @property StudentStudyRecords[] $studentStudyRecords
- * @property StudentStudyRecords[] $studentStudyRecords0
- * @property StudentSubjects[] $studentSubjects
- * @property StudentSubjects[] $studentSubjects0
- * @property Students[] $students
- * @property Students[] $students0
- * @property Students[] $students1
- * @property Studies[] $studies
- * @property Studies[] $studies0
- * @property StudyCourseLoads[] $studyCourseLoads
- * @property StudyCourseLoads[] $studyCourseLoads0
- * @property StudyMajors[] $studyMajors
- * @property StudyMajors[] $studyMajors0
- * @property StudyModes[] $studyModes
- * @property StudyModes[] $studyModes0
- * @property StudyPaths[] $studyPaths
- * @property StudyPaths[] $studyPaths0
- * @property StudyStructures[] $studyStructures
- * @property StudyStructures[] $studyStructures0
- * @property StudyYearSessionTypes[] $studyYearSessionTypes
- * @property StudyYearSessionTypes[] $studyYearSessionTypes0
- * @property StudyYearSessions[] $studyYearSessions
- * @property StudyYearSessions[] $studyYearSessions0
- * @property StudyYears[] $studyYears
- * @property StudyYears[] $studyYears0
- */
-class User extends ActiveRecord implements IdentityInterface {
+
+class User1 extends ActiveRecord implements IdentityInterface {
 
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
     const STATUS_SUSPENDED = 2;
+
+    public $campus;
+    public $school;
+    public $image;
 
     /**
      * {@inheritdoc}
@@ -206,15 +37,24 @@ class User extends ActiveRecord implements IdentityInterface {
      */
     public function rules() {
         return [
-            [['group', 'first_name', 'last_name', 'email', 'active', 'auth_key', 'password_hash', 'department', 'username', 'title'], 'required'],
+            [['group', 'first_name', 'last_name', 'email', 'active', 'auth_key', 'password_hash',
+            'department', 'username', 'title', 'man_number'], 'required'],
             [['group', 'active', 'login_attempts', 'updated_by', 'created_by', 'created_at', 'updated_at', 'department'], 'default', 'value' => null],
             [['group', 'active', 'login_attempts', 'updated_by', 'created_by', 'created_at', 'updated_at', 'department'], 'integer'],
             [['email', 'password_hash', 'verification_token', 'ip_address', 'lms_account_created'], 'string'],
+            [['image'], 'file',
+                'extensions' => 'jpg, jpeg, png',
+                'mimeTypes' => 'image/jpg,image/jpeg, image/png',
+                'wrongExtension' => 'Only image files(jpeg,jpg,png) are allowed'],
             [['expiry_date', 'last_login'], 'safe'],
             [['first_name', 'last_name', 'phone', 'password_reset_token', 'other_name'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
-            [['man_number'], 'string', 'max' => 15],
-            [['username'], 'number', 'max' => 45],
+            [['phone'], PhoneInputValidator::className()],
+            ['phone', 'unique', 'when' => function ($model) {
+                    return $model->isAttributeChanged('phone_number');
+                }, 'message' => 'Mobile number already in use!'],
+            [['man_number'], 'number', 'message' => "Man no must be a number!"],
+            [['username'], 'number', 'message' => "Username must be a number!"],
             ['email', 'email', 'message' => "The email isn't correct!"],
             ['email', 'unique', 'when' => function ($model) {
                     return $model->isAttributeChanged('email');

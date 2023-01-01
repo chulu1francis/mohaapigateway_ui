@@ -8,7 +8,7 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'schoolingly-frontend',
+    'id' => 'aucsoap-frontend',
     'name' => $params['siteName'],
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -17,19 +17,19 @@ return [
     'timeZone' => 'Africa/Lusaka',
     'components' => [
         'request' => [
-            'csrfParam' => 'schoolingly_csrf-frontend',
-              'csrfCookie' => [
+            'csrfParam' => 'aucsoap_csrf-frontend',
+            'csrfCookie' => [
                 'httpOnly' => true,
                 'secure' => true,
             ],
             'baseUrl' => ''
         ],
         'user' => [
-            'identityClass' => 'frontend\models\User',
+            'identityClass' => 'frontend\models\Organisations',
             'enableAutoLogin' => false,
             'loginUrl' => ['site/login'],
             'authTimeout' => 1 * 24 * 60 * 60,
-            'identityCookie' => ['name' => 'schoolingly_identity-frontend', 'httpOnly' => true],
+            'identityCookie' => ['name' => 'aucsoap_identity-frontend', 'httpOnly' => true],
         ],
         'session' => [
             'class' => 'yii\redis\Session',
@@ -39,7 +39,7 @@ return [
                 'port' => 6379,
                 'database' => 0,
             ],
-            'name' => 'schoolingly-frontend',
+            'name' => 'aucsoap-frontend',
             'cookieParams' => [
                 'lifetime' => 1 * 24 * 60 * 60,
                 'secure' => true,
@@ -65,13 +65,14 @@ return [
                 ],
             ],
         ],
-      'errorHandler' => [
+        'errorHandler' => [
             'errorAction' => 'site/error',
         ],
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'hostInfo' => $params['host'],
             'rules' => [
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',

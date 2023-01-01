@@ -24,10 +24,10 @@ AppAsset::register($this);
         <meta name="theme-color" content="#ffffff">
         <!-- Mobile Metas -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('@web/img/logo.png') ?>">
-        <link rel="icon" type="image/png" sizes="32x32" href="<?= Url::to('@web/img/logo.png') ?>">
-        <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('@web/img/logo.png') ?>">
-        <link rel="shortcut icon" type="image/x-icon" href="<?= Url::to('@web/img/logo.png') ?>">
+        <link rel="apple-touch-icon" sizes="180x180" href="<?= Url::to('@web/img/AU_logo.png') ?>">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?= Url::to('@web/img/AU_logo.png') ?>">
+        <link rel="icon" type="image/png" sizes="16x16" href="<?= Url::to('@web/img/AU_logo.png') ?>">
+        <link rel="shortcut icon" type="image/x-icon" href="<?= Url::to('@web/img/AU_logo.png') ?>">
         <?php $this->head() ?>
     </head>
     <body class="account-pages">

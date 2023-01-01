@@ -27,14 +27,14 @@ $form = ActiveForm::begin([
                     'class' => 'form-label',
                     'style' => "font-size:13px;font-weight:normal;",
                 ],
-//        'addon' => ['prepend' => ['content' => ' <span class="fas fa-phone-alt"></span>']]
+
             ])->textInput([
         'class' => 'form-control',
         'maxlength' => true,
         'autocorrect' => 'off',
         'autocapitalize' => 'none',
         'autofocus' => false,
-        'placeholder' => 'Staff man number',])->label('Man No');
+        'placeholder' => 'Staff email address',])->label('Email');
     ?>
 </div>
 <?=
@@ -60,7 +60,7 @@ $form->field($model, 'password', [
         <?=
         $form->field($model, 'verifyCode')->widget(Captcha::className(),
                 [
-                    'imageOptions' => ['id' => 'captcha-image','style'=>''],
+                    'imageOptions' => ['id' => 'captcha-image', 'style' => ''],
                     'template' => '<div class="row">'
                     . '<div class="col-sm-9 captcha_img">{image}</div>'
                     . '<div class="col-sm-3"><a class="rounded-2 flex-1 ms-2 fs--1" id="refresh-captcha" href="#">'
@@ -76,7 +76,7 @@ $form->field($model, 'password', [
     <?php } ?>
 </div>
 <div class="form-group col-auto">
-    <?= Html::a('Forgot Password?', ['#'], ['class' => "fs--1 text-secondary"]) ?>
+    <?= Html::a('Forgot Password?', ['site/request-password-reset'], ['class' => "fs--1 text-primary"]) ?>
 </div>
 
 <div class="form-group">

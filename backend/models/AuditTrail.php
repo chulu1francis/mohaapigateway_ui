@@ -92,4 +92,19 @@ class AuditTrail extends \yii\db\ActiveRecord {
         $audit->save();
     }
 
+    /**
+     * Function for logging audit trails for not logged in users
+     * @param type $action
+     * @param type $extraData
+     */
+    public static function logTrailUser($action, $extraData = '',$user) {
+        $audit = new AuditTrail();
+        $audit->user = $user;
+        $audit->action = $action;
+        $audit->extra_data = $extraData;
+        $audit->ip_address = Yii::$app->request->getUserIP();
+        $audit->user_agent = Yii::$app->request->getUserAgent();
+        $audit->save();
+    }
+
 }

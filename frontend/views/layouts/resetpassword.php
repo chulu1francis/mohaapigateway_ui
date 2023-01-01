@@ -13,12 +13,12 @@ AppAsset::register($this);
 <html lang="en-US" dir="ltr">
     <head>
         <?= Html::csrfMetaTags() ?>
-        <title><?= Yii::$app->params['siteName']?> | <?= Html::encode($this->title) ?></title>
+        <title><?= Yii::$app->params['siteName'] ?> | <?= Html::encode($this->title) ?></title>
         <!-- Basic -->
         <meta charset="UTF-8">
 
-        <meta name="keywords" content="<?= Yii::$app->params['siteName']?>" />
-        <meta name="description" content="<?= Yii::$app->params['siteName']?>">
+        <meta name="keywords" content="<?= Yii::$app->params['siteName'] ?>" />
+        <meta name="description" content="<?= Yii::$app->params['siteName'] ?>">
         <meta name="author" content="okler.net">
         <meta name="theme-color" content="#ffffff">
         <!-- Mobile Metas -->
@@ -62,29 +62,18 @@ AppAsset::register($this);
                     }
                 </script>
                 <div class="row flex-center min-vh-100 py-6">
-                    <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-
+                    <div class="col-lg-9">
                         <div class="card">
                             <div class="card-body p-5 p-sm-3">
-                                <div class="row flex-between-center">
-                                    <div class="col-lg-12 text-center">
-                                        <img class="me-2" src="<?= Url::to('@web/img/logo.png') ?>" alt="" height="80" width="120" />
-                                    </div>
-                                    <div class="col-lg-12 text-center">&nbsp;</div>
-                                    <div class="col-lg-12 text-center fs--1">
-                                        <h3><?= Yii::$app->params['siteName']?> Staff login</h3>
-                                    </div>
-                                    <hr>
-                                </div>
                                
                                 <?= $content ?>
-                               
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+
         <!--    End of Main Content-->
         <!-- ===============================================-->
         <?php $this->endBody() ?>

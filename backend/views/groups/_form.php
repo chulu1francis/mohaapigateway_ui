@@ -63,29 +63,29 @@ $form = ActiveForm::begin([
 //        $count=0;
 //        foreach ($array as $key => $permissions) {
 //            echo '<p><h5>' . $key . '</h5></p>';
-            echo $form->field($model, 'permissions', [
-                'enableAjaxValidation' => true,
-                'labelOptions' => [
-                    'class' => 'text-dark is-required',
-                    'style' => "font-size:14px;font-weight:normal;",
-                ],
-            ])->checkboxList(ArrayHelper::map(AauthPerm::getPermissions(), 'id', 'name'), [
-                'custom' => true,
-                'item' => function ($index, $label, $name, $checked, $value) {
-                    $checked = $checked ? 'checked' : '';
-                    return "<label class='form-check-label col-md-3' style='font-size:15px;cursor: pointer;' > "
-                    . "<input class='form-check-input' type='checkbox' {$checked} name='{$name}' value='{$value}'>&nbsp;&nbsp;{$label} </label>";
-                },
-                'separator' => false,
-                'required' => true,
-            ])->label(false);
+        echo $form->field($model, 'permissions', [
+            'enableAjaxValidation' => true,
+            'labelOptions' => [
+                'class' => 'text-dark is-required',
+                'style' => "font-size:14px;font-weight:normal;",
+            ],
+        ])->checkboxList(ArrayHelper::map(AauthPerm::getPermissions(), 'id', 'name'), [
+            'custom' => true,
+            'item' => function ($index, $label, $name, $checked, $value) {
+                $checked = $checked ? 'checked' : '';
+                return "<label class='form-check-label col-md-3' style='font-size:15px;cursor: pointer;' > "
+                . "<input class='form-check-input' type='checkbox' {$checked} name='{$name}' value='{$value}'>&nbsp;&nbsp;{$label} </label>";
+            },
+            'separator' => false,
+            'required' => true,
+        ])->label(false);
 //                $count++;
 //        }
         ?>
     </div>
 </div>
 <div class="mb-3">
-    <?= Html::submitButton('Save', ['class' => 'btn btn-falcon-default btn-sm me-1 mb-1']) ?>
+    <?= Html::submitButton('Save', ['class' => 'btn ' . Yii::$app->params['btnClass'] . ' btn-sm font-weight-bold font-size:18px;']) ?>
 </div>
 
 <?php ActiveForm::end(); ?>

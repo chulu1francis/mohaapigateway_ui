@@ -12,6 +12,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
 use backend\models\Utils;
+use backend\models\PasswordResetRequestForm;
+use yii\web\UploadedFile;
+use backend\models\AauthUserFiles;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -33,11 +36,13 @@ class UserController extends Controller {
                             'update',
                             'delete',
                             'view',
-                            'lms-account'
+                            'update-image'
                         ],
                         'rules' => [
                             [
-                                'actions' => ['index', 'create', 'update', 'delete', 'view', 'lms-account'],
+                                'actions' => [
+                                    'index', 'create', 'update', 'delete', 'view', 'update-image'
+                                ],
                                 'allow' => true,
                                 'roles' => ['@'],
                             ],
@@ -51,6 +56,39 @@ class UserController extends Controller {
                     ],
                 ]
         );
+    }
+
+    public function actionUpdateImage($id) {
+        $model = $this->findModel($id);
+        $oldFile = $model->image;
+
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $profile = UploadedFile::getInstance($model, 'image');
+
+            //Lets save the logo
+            if (!empty($profile)) {
+                $model->image = Yii::$app->security->generateRandomString() . "." . $profile->extension;
+                $profile->saveAs(Yii::getAlias('@backend') . '/web/uploads/' . $model->image);
+
+                if ($model->save(false)) {
+                    if (!empty($oldFile)) {
+                        if (file_exists(Yii::getAlias('@backend') . '/web/uploads/' . $oldFile)) {
+                            unlink(Yii::getAlias('@backend') . '/web/uploads/' . $oldFile);
+                        }
+                    }
+
+                    Yii::$app->session->setFlash('success', "User profile successfull updated");
+                } else {
+                    $message = '';
+                    foreach ($model->getErrors() as $error) {
+                        $message .= $error[0];
+                    }
+                    Yii::$app->session->setFlash('error', "Error occured while updating user profile.Please try again.Error::" . $message);
+                }
+            }
+        }
+
+        return $this->redirect(['view', 'id' => $id]);
     }
 
     /**
@@ -101,10 +139,41 @@ class UserController extends Controller {
     public function actionCreate() {
         if (User::isUserAllowedTo("Manage users")) {
             $model = new User();
+            if (Yii::$app->request->isAjax) {
+                $model->load(Yii::$app->request->post());
+                return Json::encode(\yii\widgets\ActiveForm::validate($model));
+            }
 
             if ($this->request->isPost) {
-                if ($model->load($this->request->post()) && $model->save()) {
-                    return $this->redirect(['view', 'id' => $model->id]);
+                if ($model->load($this->request->post())) {
+                    $model->created_by = Yii::$app->user->id;
+                    $model->updated_by = Yii::$app->user->id;
+                    $model->active = User::STATUS_INACTIVE;
+                    $model->username = $model->email;
+                    $model->auth_key = Yii::$app->security->generateRandomString();
+                    $model->password = Yii::$app->getSecurity()->generatePasswordHash(Yii::$app->security->generateRandomString() . $model->auth_key);
+                    $days = \Yii::$app->params['passwordValidity'] * 30;
+                    $model->expiry_date = date('Y-m-d', (strtotime('+' . $days . 'days', strtotime(date("Y-m-d")))));
+                    $profile = UploadedFile::getInstance($model, 'image');
+                    $model->image = Yii::$app->security->generateRandomString() . "." . $profile->extension;
+                    $profile->saveAs(Yii::getAlias('@backend') . '/web/uploads/' . $model->image);
+
+                    if ($model->save()) {
+                        $resetPasswordModel = new PasswordResetRequestForm();
+                        if ($resetPasswordModel->sendEmailAccountCreation($model->email)) {
+                            Yii::$app->session->setFlash('success', 'User account with email:' . $model->email . ' was successfully created.');
+                            return $this->redirect(['view', 'id' => $model->id]);
+                        } else {
+                            Yii::$app->session->setFlash('error', "User account created but activation email was not sent!");
+                            return $this->redirect(['view', 'id' => $model->id]);
+                        }
+                    } else {
+                        $message = '';
+                        foreach ($model->getErrors() as $error) {
+                            $message .= $error[0];
+                        }
+                        Yii::$app->session->setFlash('error', "Error occured while creating user.Please try again.Error::" . $message);
+                    }
                 }
             } else {
                 $model->loadDefaultValues();
@@ -129,8 +198,36 @@ class UserController extends Controller {
     public function actionUpdate($id) {
         if (User::isUserAllowedTo("Manage users")) {
             $model = $this->findModel($id);
+            if (Yii::$app->request->isAjax) {
+                $model->load(Yii::$app->request->post());
+                return Json::encode(\yii\widgets\ActiveForm::validate($model));
+            }
 
-            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            $oldProfile = $model->image;
+
+            if ($this->request->isPost && $model->load($this->request->post())) {
+                $model->updated_by = Yii::$app->user->id;
+                $model->username = $model->email;
+                $profile = UploadedFile::getInstance($model, 'image');
+                $model->image = Yii::$app->security->generateRandomString() . "." . $profile->extension;
+                $profile->saveAs(Yii::getAlias('@backend') . '/web/uploads/' . $model->image);
+
+                if ($model->save()) {
+                    if (!empty($oldProfile)) {
+                        if (file_exists(Yii::getAlias('@backend') . '/web/uploads/' . $oldProfile)) {
+                            unlink(Yii::getAlias('@backend') . '/web/uploads/' . $oldProfile);
+                        }
+                    }
+
+                    Yii::$app->session->setFlash('success', 'User account was successfully updated.');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    $message = '';
+                    foreach ($model->getErrors() as $error) {
+                        $message .= $error[0];
+                    }
+                    Yii::$app->session->setFlash('error', "Error occured while updating user.Please try again.Error::" . $message);
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
@@ -141,95 +238,6 @@ class UserController extends Controller {
             Yii::$app->session->setFlash('error', 'You are not authorised to perform that action. This action will be reported');
             return $this->redirect(['home/index']);
         }
-    }
-
-    /**
-     * Create users LMS account by making an http call
-     * @param type $id
-     * @return type
-     */
-    public function actionLmsAccount($id, $origin = "") {
-        if (User::isUserAllowedTo("Manage users")) {
-            $model = $this->findModel($id);
-            $params = $this->lmsUserObject($model);
-            if (!empty($params)) {
-                $url = $this->buildUrl(Yii::$app->params['lms']['functions']['createUser']) . Utils::format_postdata_for_curlcall($params);
-                $result = Utils::getJson($url);
-
-                if (!empty($result) && $result['status'] === 1) {
-                    if (isset($result['content'][0]['id']) && $result['content'][0]['id']) {
-                        //We updated record
-                        $model->lms_account_created = "Yes";
-                        $model->save(false);
-                        Yii::$app->session->setFlash('success', 'LMS account was created successfully');
-                    } else {
-                        $decodedContent = json_decode($result['content'], true);
-
-                         //If user exists on the LMS, we update record
-                        if (isset($decodedContent['debuginfo']) && str_starts_with($decodedContent['debuginfo'], "Username")) {
-                            $model->lms_account_created = "Yes";
-                            $model->save(false);
-                        }
-                        Yii::$app->session->setFlash('error', "LMS response is: " . $decodedContent['debuginfo']);
-                    }
-                } else {
-                    Yii::$app->session->setFlash('error', 'Error occured while creating LMS user account. Please try again!');
-                }
-            } else {
-                Yii::$app->session->setFlash('error', 'Error occured while creating LMS user account. Please try again!');
-            }
-
-            if ($origin == "index") {
-                return $this->redirect(['index']);
-            } else {
-                return $this->redirect(['view', 'id' => $id]);
-            }
-        } else {
-            Yii::$app->session->setFlash('error', 'You are not authorised to perform that action. This action will be reported');
-            return $this->redirect(['home/index']);
-        }
-    }
-
-    /**
-     * Build LMS url
-     * @param type $function
-     * @return string
-     */
-    protected function buildUrl($function) {
-        $url = Yii::$app->params['lms']['host']
-                . Yii::$app->params['lms']['extension']
-                . "?wstoken=" . Yii::$app->params['lms']['token']
-                . "&wsfunction=" . $function
-                . "&moodlewsrestformat=json&";
-        return $url;
-    }
-
-    /**
-     * Create the user object to be pushed to the LMS
-     * @param type $model
-     * @return array
-     */
-    protected function lmsUserObject($model) {
-        $params = "";
-
-        if (!empty($model)) {
-            $user = new \stdClass();
-            $user->username = $model->man_number;
-            $user->password = $model->man_number;
-            $user->firstname = $model->first_name;
-            $user->lastname = $model->last_name;
-            $user->email = trim($model->email);
-            $user->auth = 'ws';
-            $user->idnumber = $model->man_number;
-            $user->lang = Yii::$app->params['lms']['lang'];
-            $user->timezone = Yii::$app->params['lms']['timeZone'];
-            $user->mailformat = 0;
-            $user->description = Yii::$app->params['siteName'] . ' staff user creation';
-            $user->city = "";
-            $user->country = Yii::$app->params['lms']['countryCode'];
-            $params = ['users' => [$user]];
-        }
-        return $params;
     }
 
     /**
@@ -263,6 +271,44 @@ class UserController extends Controller {
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionSchools() {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $campus = $parents[0];
+                $out = \backend\models\Schools::find()
+                        ->select(['id', 'name'])
+                        ->where(['campus' => $campus])
+                        ->asArray()
+                        ->all();
+
+                return ['output' => $out, 'selected' => ""];
+            }
+        }
+        return ['output' => '', 'selected' => ''];
+    }
+
+    public function actionDepartments() {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $campus = $parents[0];
+                $out = \backend\models\Departments::find()
+                        ->select(['id', 'name'])
+                        ->where(['school' => $campus])
+                        ->asArray()
+                        ->all();
+
+                return ['output' => $out, 'selected' => ""];
+            }
+        }
+        return ['output' => '', 'selected' => ''];
     }
 
 }

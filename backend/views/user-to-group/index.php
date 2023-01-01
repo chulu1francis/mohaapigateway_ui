@@ -51,7 +51,7 @@ $read_only = true;
                         <?php
                         if (backend\models\User::isUserAllowedTo('Manage user to group')) {
                             $read_only = false;
-                            echo '<button class="btn ' . Yii::$app->params['btnClass'] . ' btn-sm me-1 mb-1" type="button" data-bs-toggle="modal" data-bs-target="#submitInfo">
+                            echo '<button class="btn btn-outline-success btn-sm me-1 mb-1" type="button" data-bs-toggle="modal" data-bs-target="#submitInfo">
                               Assign user to group
                             </button>';
                         }
@@ -168,7 +168,7 @@ $read_only = true;
             ];
             $gridColumns1 = [
                 ['class' => 'yii\grid\SerialColumn'],
-                 [
+                [
                     'attribute' => 'user',
                     'format' => 'raw',
                     'value' => function ($model) {

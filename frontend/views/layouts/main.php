@@ -2,15 +2,16 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use backend\assets\AppAsset;
+use frontend\assets\AppAsset;
 use yii\bootstrap5\Html;
 use yii\helpers\Url;
-use backend\models\User;
+use frontend\models\Organisations;
 
 AppAsset::register($this);
 $show = "";
 $active = "";
 $this->beginPage();
+$session = Yii::$app->session;
 ?>
 <!DOCTYPE html>
 <html class="navbar-vertical-collapsed" lang="en-US" dir="ltr">
@@ -91,7 +92,14 @@ JS;
                             <ul class="navbar-nav flex-column mb-3" id="navbarVerticalNav">
                                 <li class="nav-item">
                                     <?php
-                                    if (Yii::$app->controller->id == "home" && Yii::$app->controller->action->id == "index") {
+                                    if (Yii::$app->controller->id == "home" &&
+                                            (
+                                            Yii::$app->controller->action->id == "index" ||
+                                            Yii::$app->controller->action->id == "update-registration-details" ||
+                                            Yii::$app->controller->action->id == "add-registration-details" ||
+                                            Yii::$app->controller->action->id == "add-contact-person" ||
+                                            Yii::$app->controller->action->id == "update-contact-person" ||
+                                            Yii::$app->controller->action->id == "update-profile")) {
                                         echo Html::a(' <div class="d-flex align-items-center">
                                             <span class="nav-link-icon">
                                                 <span class="fas fa-home"></span>
@@ -110,148 +118,59 @@ JS;
                                     }
                                     ?>
                                 </li>
+
                                 <li class="nav-item">
                                     <?php
-                                    if (User::isUserAllowedTo("View Student data")) {
-                                        $showStudent = "";
-                                        $activeStudent = "";
-                                        if (Yii::$app->controller->id == "students"
-                                        ) {
-                                            $showStudent = "show";
-                                            $activeStudent = "active";
+                                    if (Yii::$app->controller->id == "accreditation-applications"
+                                    ) {
+                                        $show = "show";
+                                        $active = "active";
+                                    }
+                                    ?>
+                                    <a class="nav-link <?= $active ?> dropdown-indicator" href="#dashboard" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="dashboard">
+                                        <div class="d-flex align-items-center">
+                                            <span class="nav-link-icon">
+                                                <span class="fas fa-folder-open">
+                                                </span></span>
+                                            <span class="nav-link-text ps-1">My applications</span>
+                                        </div>
+                                    </a>
+
+                                    <ul class="nav collapse <?= $show ?>" id="dashboard">
+                                        <?php
+                                        if (Yii::$app->controller->id == "accreditation-applications" &&
+                                                (Yii::$app->controller->action->id == "consultative"||
+                                                 Yii::$app->controller->action->id == "view"||
+                                                Yii::$app->controller->action->id == "create"||
+                                                Yii::$app->controller->action->id == "update")) {
+                                            echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Consultative status</span></div>', ['accreditation-applications/consultative'], ["class" => 'nav-link active']) . '</li>';
+                                        } else {
+                                            echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Consultative status</span></div>', ['accreditation-applications/consultative'], ["class" => 'nav-link']) . '</li>';
                                         }
-                                        ?>
-                                        <a class="nav-link <?= $activeStudent ?> dropdown-indicator" href="#students" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="students">
-                                            <div class="d-flex align-items-center">
-                                                <span class="nav-link-icon">
-                                                    <span class="fas fa-graduation-cap">
-                                                    </span></span>
-                                                <span class="nav-link-text ps-1">Students</span>
-                                            </div>
-                                        </a>
 
-                                        <ul class="nav collapse <?= $showStudent ?>" id="students">
-                                            <?php
-                                            if (User::isUserAllowedTo("View Student data")) {
-                                                if (Yii::$app->controller->id == "students" &&
-                                                        (Yii::$app->controller->action->id == "index" ||
-                                                        Yii::$app->controller->action->id == "view" ||
-                                                        Yii::$app->controller->action->id == "create" ||
-                                                        Yii::$app->controller->action->id == "update")) {
-                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Identity Cards</span></div>', ['students/index'], ["class" => 'nav-link active']) . '</li>';
-                                                } else {
-                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Identity Cards</span></div>', ['students/index'], ["class" => 'nav-link']) . '</li>';
-                                                }
-                                            }
-                                            ?>
 
-                                        </ul>
-                                    <?php } ?>
-                                </li>
-                                <li class="nav-item">
-                                    <?php
-                                    if (User::isUserAllowedTo("View documents") ||
-                                            User::isUserAllowedTo("Manage documents") ||
-                                            User::isUserAllowedTo("Review and approve documents")) {
-                                        if (Yii::$app->controller->id == "documents" &&
+                                        if (Yii::$app->controller->id == "accreditation-applications" &&
+                                                (Yii::$app->controller->action->id == "national"||
+                                                 Yii::$app->controller->action->id == "view-national"||
+                                                Yii::$app->controller->action->id == "create-national"||
+                                                Yii::$app->controller->action->id == "update-national")) {
+                                            echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">National status</span></div>', ['accreditation-applications/national'], ["class" => 'nav-link active']) . '</li>';
+                                        } else {
+                                            echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">National status</span></div>', ['accreditation-applications/national'], ["class" => 'nav-link']) . '</li>';
+                                        }
+
+                                        if (Yii::$app->controller->id == "observer-applications" &&
                                                 (Yii::$app->controller->action->id == "index" ||
                                                 Yii::$app->controller->action->id == "view" ||
                                                 Yii::$app->controller->action->id == "create" ||
-                                                Yii::$app->controller->action->id == "approve" ||
-                                                Yii::$app->controller->action->id == "create-folder" ||
-                                                Yii::$app->controller->action->id == "update-folder" ||
                                                 Yii::$app->controller->action->id == "update")) {
-                                            echo Html::a(' <div class="d-flex align-items-center">
-                                            <span class="nav-link-icon">
-                                                <span class="fas fa-folder"></span>
-                                            </span>
-                                             </span></span>
-                                            <span class="nav-link-text ps-1">Documents</span>
-                                        </div>', ['documents/index'], ["class" => "nav-link active"]);
+                                            echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Observer status</span></div>', ['user/index'], ["class" => 'nav-link active']) . '</li>';
                                         } else {
-                                            echo Html::a(' <div class="d-flex align-items-center">
-                                            <span class="nav-link-icon">
-                                                <span class="fas fa-folder"></span>
-                                            </span>
-                                            </span></span>
-                                            <span class="nav-link-text ps-1">Documents</span>
-                                        </div>', ['documents/index'], ["class" => "nav-link"]);
-                                        }
-                                    }
-                                    ?>
-                                </li>
-                                <li class="nav-item">
-                                    <?php
-                                    if (User::isUserAllowedTo("Manage users") || User::isUserAllowedTo("View users") ||
-                                            User::isUserAllowedTo("Manage groups") || User::isUserAllowedTo("View groups")) {
-                                        ?>
-
-                                        <!-- parent pages-->
-                                        <?php
-                                        if (Yii::$app->controller->id == "user" ||
-                                                Yii::$app->controller->id == "groups" ||
-                                                Yii::$app->controller->id == "user-permissions" ||
-                                                Yii::$app->controller->id == "user-to-group"
-                                        ) {
-                                            $show = "show";
-                                            $active = "active";
+                                            echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Observer status</span></div>', ['user/index'], ["class" => 'nav-link']) . '</li>';
                                         }
                                         ?>
-                                        <a class="nav-link <?= $active ?> dropdown-indicator" href="#dashboard" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="dashboard">
-                                            <div class="d-flex align-items-center">
-                                                <span class="nav-link-icon">
-                                                    <span class="fas fa-users">
-                                                    </span></span>
-                                                <span class="nav-link-text ps-1">User Management</span>
-                                            </div>
-                                        </a>
 
-                                        <ul class="nav collapse <?= $show ?>" id="dashboard">
-                                            <?php
-                                            if (User::isUserAllowedTo("Manage groups") || User::isUserAllowedTo("View groups")) {
-                                                if (Yii::$app->controller->id == "groups" &&
-                                                        (Yii::$app->controller->action->id == "index" ||
-                                                        Yii::$app->controller->action->id == "view" ||
-                                                        Yii::$app->controller->action->id == "create" ||
-                                                        Yii::$app->controller->action->id == "update")) {
-                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Groups</span></div>', ['groups/index'], ["class" => 'nav-link active']) . '</li>';
-                                                } else {
-                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Groups</span></div>', ['groups/index'], ["class" => 'nav-link']) . '</li>';
-                                                }
-                                            }
-
-                                            if (User::isUserAllowedTo("Manage user to group")) {
-                                                if (Yii::$app->controller->id == "user-to-group" &&
-                                                        (Yii::$app->controller->action->id == "index")) {
-                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">User to group</span></div>', ['user-to-group/index'], ["class" => 'nav-link active']) . '</li>';
-                                                } else {
-                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">User to group</span></div>', ['user-to-group/index'], ["class" => 'nav-link']) . '</li>';
-                                                }
-                                            }
-                                            if (User::isUserAllowedTo("Assign permission to user")) {
-                                                if (Yii::$app->controller->id == "user-permissions" &&
-                                                        (Yii::$app->controller->action->id == "index")) {
-                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Special permissions</span></div>', ['user-permissions/index'], ["class" => 'nav-link active']) . '</li>';
-                                                } else {
-                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Special permissions</span></div>', ['user-permissions/index'], ["class" => 'nav-link']) . '</li>';
-                                                }
-                                            }
-
-                                            if (User::isUserAllowedTo("Manage users") || User::isUserAllowedTo("View Users")) {
-                                                if (Yii::$app->controller->id == "user" &&
-                                                        (Yii::$app->controller->action->id == "index" ||
-                                                        Yii::$app->controller->action->id == "view" ||
-                                                        Yii::$app->controller->action->id == "create" ||
-                                                        Yii::$app->controller->action->id == "update")) {
-                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Users</span></div>', ['user/index'], ["class" => 'nav-link active']) . '</li>';
-                                                } else {
-                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Users</span></div>', ['user/index'], ["class" => 'nav-link']) . '</li>';
-                                                }
-                                            }
-                                            ?>
-
-                                        </ul>
-                                    <?php } ?>
+                                    </ul>
                                 </li>
                             </ul>
                         </div>
@@ -265,26 +184,30 @@ JS;
                         <button class="btn navbar-toggler-humburger-icon navbar-toggler me-1 me-sm-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
                         <a class="navbar-brand"  href="<?= Url::toRoute('home/index') ?>">
                             <div class="d-flex align-items-center">
+
                                 <img class="me-2" src="<?= Url::to('@web/img/logo.png') ?>" alt="" width="40" />
                                 <span class="font-sans-serif text-secondary"><?= Yii::$app->params['siteName'] ?></span>
                             </div>
                         </a>
 
                         <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
-                            <li class="nav-item">
-                                <div class="theme-control-toggle fa-icon-wait px-2"><input class="form-check-input ms-0 theme-control-toggle-input" id="themeControlToggle" type="checkbox" data-theme-control="theme" value="dark" /><label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Switch to light theme"><span class="fas fa-sun fs-0"></span></label><label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Switch to dark theme"><span class="fas fa-moon fs-0"></span></label></div>
-                            </li>
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link pe-0 ps-2" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <div class="avatar avatar-xl">
-                                        <?= Html::img('@web/img/icon.png', ['class' => 'rounded-circle']); ?>
+                                        <?php
+                                        $orgLogo = '@web/img/icon.png';
+                                        if (!empty($session->get('logo'))) {
+                                            $orgLogo = '@web/uploads/' . $session->get('logo');
+                                        }
+                                        ?>
+                                        <?= Html::img($orgLogo, ['class' => 'rounded-circle']); ?>
                                     </div>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
                                     <div class="bg-white dark__bg-1000 rounded-2 py-2">
                                         <span class="dropdown-item fw-bold">
-                                            Hi! <?= Yii::$app->getUser()->identity->title ?> <?= Yii::$app->getUser()->identity->last_name ?>
+                                            Hello <?= Yii::$app->getUser()->identity->name ?> organisation
                                         </span>
 
                                         <div class="dropdown-divider"></div>
@@ -335,16 +258,16 @@ JS;
 
                     <?= $content ?>
 
-                    <footer class="footer">
-                        <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
-                            <div class="col-12 col-sm-auto text-center">
-                                <p class="mb-0 text-600"><?= Yii::$app->params['institution'] ?>  
-                                    <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 
-                                    2022 &copy; <a target="_blank" href="<?= Yii::$app->params['website'] ?>">
-                                        <?= Yii::$app->params['institutionShortName'] ?></a></p>
-                            </div>
-                        </div>
-                    </footer>
+                    <!--                    <footer class="footer">
+                                            <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
+                                                <div class="col-12 col-sm-auto text-center">
+                                                    <p class="mb-0 text-600"><?php //Yii::$app->params['institution']   ?>  
+                                                        <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 
+                                                        2022 &copy; <a target="_blank" href="<?php //Yii::$app->params['website']   ?>">
+                    <?php //Yii::$app->params['institutionShortName']  ?></a></p>
+                                                </div>
+                                            </div>
+                                        </footer>-->
                 </div>
 
             </div>

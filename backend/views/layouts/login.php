@@ -13,12 +13,12 @@ AppAsset::register($this);
 <html lang="en-US" dir="ltr">
     <head>
         <?= Html::csrfMetaTags() ?>
-        <title><?= Yii::$app->params['siteName']?> | <?= Html::encode($this->title) ?></title>
+        <title><?= Yii::$app->params['siteName'] ?> | <?= Html::encode($this->title) ?></title>
         <!-- Basic -->
         <meta charset="UTF-8">
 
-        <meta name="keywords" content="<?= Yii::$app->params['siteName']?>" />
-        <meta name="description" content="<?= Yii::$app->params['siteName']?>">
+        <meta name="keywords" content="<?= Yii::$app->params['siteName'] ?>" />
+        <meta name="description" content="<?= Yii::$app->params['siteName'] ?>">
         <meta name="author" content="okler.net">
         <meta name="theme-color" content="#ffffff">
         <!-- Mobile Metas -->
@@ -68,17 +68,17 @@ AppAsset::register($this);
                             <div class="card-body p-5 p-sm-3">
                                 <div class="row flex-between-center">
                                     <div class="col-lg-12 text-center">
-                                        <img class="me-2" src="<?= Url::to('@web/img/logo.png') ?>" alt="" height="80" width="120" />
+                                        <img class="me-2" src="<?= Url::to('@web/img/logo.png') ?>" alt="" height="100" width="100" />
                                     </div>
                                     <div class="col-lg-12 text-center">&nbsp;</div>
                                     <div class="col-lg-12 text-center fs--1">
-                                        <h3><?= Yii::$app->params['siteName']?> Staff login</h3>
+                                        <h3><?= Yii::$app->params['siteName'] ?> Staff login</h3>
                                     </div>
                                     <hr>
                                 </div>
-                               
+
                                 <?= $content ?>
-                               
+
                             </div>
                         </div>
                     </div>
@@ -87,7 +87,63 @@ AppAsset::register($this);
         </main>
         <!--    End of Main Content-->
         <!-- ===============================================-->
-        <?php $this->endBody() ?>
+        <?php
+        if (Yii::$app->session->getFlash('success')) {
+            echo kartik\widgets\Growl::widget([
+                'type' => kartik\widgets\Growl::TYPE_SUCCESS,
+                'title' => 'Success!',
+                'icon' => 'fas fa-check-circle fa-2x',
+                'body' => Yii::$app->session->getFlash('success'),
+                'progressBarOptions' => ['class' => 'progress-bar-success'],
+                'showSeparator' => true,
+                'delay' => 50,
+                'pluginOptions' => [
+                    'showProgressbar' => true,
+                    'placement' => [
+                        'from' => 'bottom',
+                        'align' => 'center',
+                    ]
+                ]
+            ]);
+        }
+
+        if (Yii::$app->session->getFlash('error')) {
+            echo kartik\widgets\Growl::widget([
+                'type' => kartik\widgets\Growl::TYPE_DANGER,
+                'title' => 'Error!',
+                'icon' => 'fas fa-times-circle  fa-2x',
+                'body' => Yii::$app->session->getFlash('error'),
+                'showSeparator' => true,
+                'delay' => 50,
+                'pluginOptions' => [
+                    'showProgressbar' => true,
+                    'placement' => [
+                        'from' => 'bottom',
+                        'align' => 'center',
+                    ]
+                ]
+            ]);
+        }
+
+        if (Yii::$app->session->getFlash('warning')) {
+            echo kartik\widgets\Growl::widget([
+                'type' => kartik\widgets\Growl::TYPE_WARNING,
+                'title' => 'Warning!',
+                'icon' => 'fas fa-exclamation-circle  fa-2x',
+                'body' => Yii::$app->session->getFlash('warning'),
+                'showSeparator' => true,
+                'delay' => 50,
+                'pluginOptions' => [
+                    'showProgressbar' => true,
+                    'placement' => [
+                        'from' => 'bottom',
+                        'align' => 'center',
+                    ]
+                ]
+            ]);
+        }
+        $this->endBody();
+        ?>
 
     </body>
 </html>

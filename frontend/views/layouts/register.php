@@ -13,12 +13,12 @@ AppAsset::register($this);
 <html lang="en-US" dir="ltr">
     <head>
         <?= Html::csrfMetaTags() ?>
-        <title><?= Yii::$app->params['siteName']?> | <?= Html::encode($this->title) ?></title>
+        <title><?= Yii::$app->params['siteName'] ?> | <?= Html::encode($this->title) ?></title>
         <!-- Basic -->
         <meta charset="UTF-8">
 
-        <meta name="keywords" content="<?= Yii::$app->params['siteName']?>" />
-        <meta name="description" content="<?= Yii::$app->params['siteName']?>">
+        <meta name="keywords" content="<?= Yii::$app->params['siteName'] ?>" />
+        <meta name="description" content="<?= Yii::$app->params['siteName'] ?>">
         <meta name="author" content="okler.net">
         <meta name="theme-color" content="#ffffff">
         <!-- Mobile Metas -->
@@ -51,8 +51,8 @@ AppAsset::register($this);
         <!-- ===============================================-->
         <!--    Main Content-->
         <!-- ===============================================-->
-        <main class="main" id="top">
-            <div class="container" data-layout="container">
+        <main class="main" id="top" >
+            <div  class="container" data-layout="container">
                 <script>
                     var isFluid = JSON.parse(localStorage.getItem('isFluid'));
                     if (isFluid) {
@@ -61,33 +61,110 @@ AppAsset::register($this);
                         container.classList.add('container-fluid');
                     }
                 </script>
-                <div class="row flex-center min-vh-100 py-6">
-                    <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-
+                <div  class="row flex-center min-vh-2 py-3">
+                    <div class="col-lg-12">
+                        <a class="d-flex flex-center mb-4" href="../../../index.html">
+                            <img class="me-2" src="<?= Url::to('@web/img/AU_logo.png') ?>" alt="" width="250" height="85"/>
+                        </a>
                         <div class="card">
-                            <div class="card-body p-5 p-sm-3">
-                                <div class="row flex-between-center">
-                                    <div class="col-lg-12 text-center">
-                                        <img class="me-2" src="<?= Url::to('@web/img/logo.png') ?>" alt="" height="80" width="120" />
+                            <div class="card-body p-2 p-sm-4">
+
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <h5 class="fs-0 px-3 pt-3 pb-2 mb-0 ">Instructions</h5>
+                                        <ol>
+                                            <li class="falcon-card-color fs--1">
+                                                Fields marked with <span class="text-danger">*</span> are required
+                                            </li>
+                                            <li class="falcon-card-color fs--1">
+                                                An email will be sent to the provided email to complete registration
+                                            </li>
+                                            <li class="falcon-card-color fs--1">
+                                                The provided email will be used for Login 
+                                            </li>
+                                        </ol>
                                     </div>
-                                    <div class="col-lg-12 text-center">&nbsp;</div>
-                                    <div class="col-lg-12 text-center fs--1">
-                                        <h3><?= Yii::$app->params['siteName']?> Staff login</h3>
+                                    <div class="col-lg-9">
+                                        <div class="row flex-between-center mb-2">
+                                            <div class="col-auto">
+                                                <h5>Register an Organisation</h5>
+                                            </div>
+                                            <div class="col-auto text-600"><span class="mb-0 undefined">Registered?</span> 
+                                                <span>
+                                                    <?= Html::a('Click here to login', ['site/login'], ['class' => "text-primary"]) ?>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <?=$content?>
                                     </div>
-                                    <hr>
                                 </div>
-                               
-                                <?= $content ?>
-                               
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+        <!-- ===============================================-->
         <!--    End of Main Content-->
         <!-- ===============================================-->
-        <?php $this->endBody() ?>
+        <?php
+        if (Yii::$app->session->getFlash('success')) {
+            echo kartik\widgets\Growl::widget([
+                'type' => kartik\widgets\Growl::TYPE_SUCCESS,
+                'title' => 'Success!',
+                'icon' => 'fas fa-check-circle fa-2x',
+                'body' => Yii::$app->session->getFlash('success'),
+                'progressBarOptions' => ['class' => 'progress-bar-success'],
+                'showSeparator' => true,
+                'delay' => 50,
+                'pluginOptions' => [
+                    'showProgressbar' => true,
+                    'placement' => [
+                        'from' => 'bottom',
+                        'align' => 'center',
+                    ]
+                ]
+            ]);
+        }
+
+        if (Yii::$app->session->getFlash('error')) {
+            echo kartik\widgets\Growl::widget([
+                'type' => kartik\widgets\Growl::TYPE_DANGER,
+                'title' => 'Error!',
+                'icon' => 'fas fa-times-circle  fa-2x',
+                'body' => Yii::$app->session->getFlash('error'),
+                'showSeparator' => true,
+                'delay' => 50,
+                'pluginOptions' => [
+                    'showProgressbar' => true,
+                    'placement' => [
+                        'from' => 'bottom',
+                        'align' => 'center',
+                    ]
+                ]
+            ]);
+        }
+
+        if (Yii::$app->session->getFlash('warning')) {
+            echo kartik\widgets\Growl::widget([
+                'type' => kartik\widgets\Growl::TYPE_WARNING,
+                'title' => 'Warning!',
+                'icon' => 'fas fa-exclamation-circle  fa-2x',
+                'body' => Yii::$app->session->getFlash('warning'),
+                'showSeparator' => true,
+                'delay' => 50,
+                'pluginOptions' => [
+                    'showProgressbar' => true,
+                    'placement' => [
+                        'from' => 'bottom',
+                        'align' => 'center',
+                    ]
+                ]
+            ]);
+        }
+        $this->endBody();
+        ?>
 
     </body>
 </html>

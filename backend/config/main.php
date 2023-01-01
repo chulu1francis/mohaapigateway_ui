@@ -8,32 +8,38 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'schoolingly-backend',
+    'id' => 'aucsoap-backend',
     'name' => $params['siteName'],
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
-    'homeUrl' => '/admin/site/login',
+    'homeUrl' => '/admin',
     'components' => [
         'request' => [
-            'csrfParam' => 'schoolingly_csrf-backend',
+            'csrfParam' => 'aucsoap_csrf-backend',
+            'csrfCookie' => [
+                'httpOnly' => true,
+                'secure' => true,
+            ],
             'baseUrl' => '/admin'
         ],
         'user' => [
             'identityClass' => 'backend\models\User',
-            'enableAutoLogin' => true,
-            'identityCookie' => ['name' => 'schoolingly_identity-backend', 'httpOnly' => true],
+            'enableAutoLogin' => false,
+            'loginUrl' => ['site/login'],
+            'authTimeout' => 900, //15minutes
+            'identityCookie' => ['name' => 'aucsoap_identity-backend', 'httpOnly' => true],
         ],
         'session' => [
             'class' => 'yii\redis\Session',
-            'timeout' => 1800,
+            'timeout' => 900, //15minutes
             'redis' => [
                 'hostname' => 'localhost',
                 'port' => 6379,
                 'database' => 0,
             ],
-            'name' => 'schoolingly-backend',
+            'name' => 'aucsoap-backend',
             'cookieParams' => [
                 'lifetime' => 1 * 24 * 60 * 60,
             ],

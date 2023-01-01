@@ -33,7 +33,7 @@ $fullExportMenu = "";
                         if (User::isUserAllowedTo('Manage groups')) {
                             echo Html::a('<span class="fas fa-plus me-1" data-fa-transform="shrink-3"></span> Add group', ['create'],
                                     [
-                                        'class' => 'btn ' . Yii::$app->params['btnClass'] . ' me-1 mb-1',
+                                        'class' => 'btn btn-outline-success me-1 mb-1',
                                         'title' => 'Add user group',
                                         'data-bs-toggle' => 'tooltip',
                                         'data-bs-placement' => 'top',
