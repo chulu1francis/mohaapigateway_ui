@@ -2,7 +2,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use frontend\assets\AppAsset;
+use backend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -17,8 +17,8 @@ AppAsset::register($this);
         <!-- Basic -->
         <meta charset="UTF-8">
 
-        <meta name="keywords" content="ID Room" />
-        <meta name="description" content="UNZA ID Room App">
+        <meta name="keywords" content="<?= Yii::$app->params['siteName']?>" />
+        <meta name="description" content="<?= Yii::$app->params['siteName']?>">
         <meta name="author" content="okler.net">
         <meta name="theme-color" content="#ffffff">
         <!-- Mobile Metas -->
@@ -43,7 +43,6 @@ AppAsset::register($this);
             }
         </script>
         <?php $this->head() ?>
-
 
     </head>
     <body>
@@ -72,8 +71,8 @@ AppAsset::register($this);
                                         <img class="me-2" src="<?= Url::to('@web/img/logo.png') ?>" alt="" height="80" width="120" />
                                     </div>
                                     <div class="col-lg-12 text-center">&nbsp;</div>
-                                    <div class="col-lg-12 text-center">
-                                        <h3><?= Yii::$app->params['siteName']?></h3>
+                                    <div class="col-lg-12 text-center fs--1">
+                                        <h3><?= Yii::$app->params['siteName']?> Staff login</h3>
                                     </div>
                                     <hr>
                                 </div>
