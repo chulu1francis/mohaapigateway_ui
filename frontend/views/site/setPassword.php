@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="col-lg-12 text-center">&nbsp;</div>
     <div class="col-lg-12 text-center fs--1">
-        <h5>Complete <strong><?=$organisation?> Organisation</strong> registration by setting a password</h5>
+        <h5> <strong><?=$client->name?> </strong>Client user account activation</h5>
     </div>
     <hr>
 </div>
@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
         </div>
         <div class="form-group">
-            <?= Html::submitButton('Complete', ['class' => 'btn ' . Yii::$app->params['btnClass'] . ' me-1 mb-1 d-block w-100 mt-3', 'name' => 'login-button']) ?>
+            <?= Html::submitButton('Activate', ['class' => 'btn ' . Yii::$app->params['btnClass'] . ' me-1 mb-1 d-block w-100 mt-3', 'name' => 'login-button']) ?>
         </div>
         <div class="form-group mt-2 mb-0 row">
             <div class="col-12 mt-2">

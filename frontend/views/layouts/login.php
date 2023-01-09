@@ -58,21 +58,21 @@ AppAsset::register($this);
                         <div class="card overflow-hidden z-index-1">
                             <div class="card-body p-0">
                                 <div class="row g-0 h-100">
-                                    <div class="col-md-5 text-center bg-success">
+                                    <div class="col-md-5 text-center bg-primary">
                                         <div class="position-relative p-4 pt-md-5 pb-md-7 light">
                                             <div class="z-index-1 position-relative">
                                                 <span class="link-light mb-4 font-sans-serif fs-2 d-inline-block fw-bolder">
-                                                    <?= Yii::$app->params['siteName'] ?> Portal
+                                                    <?= Yii::$app->params['siteName'] ?>
                                                 </span>
                                                 <p class="opacity-75 text-white">With the power of Falcon, you can now focus only on functionaries for your digital products, while leaving the UI design on us!</p>
                                             </div>
                                         </div>
                                         <div class="mt-3 mb-4 mt-md-4 mb-md-5 light">
-                                            <p class="text-white">Not registered yet?<br>
+<!--                                            <p class="text-white">Not registered yet?<br>
                                                 <a class="text-decoration-underline link-light" href="<?= Url::to('register') ?>">
                                                     Click here to register an account 
                                                 </a>
-                                            </p>
+                                            </p>-->
                                             <p class="mb-0 mt-4 mt-md-5 fs--1 fw-semi-bold text-white opacity-75">Read our <a class="text-decoration-underline text-white" href="#!">terms</a> and <a class="text-decoration-underline text-white" href="#!">conditions </a></p>
                                         </div>
                                     </div>
@@ -80,10 +80,13 @@ AppAsset::register($this);
                                         <div class="p-4 p-md-5 flex-grow-1">
                                             <div class="row flex-between-center">
                                                 <div class="col-lg-12 text-center pb-2">
-                                                    <img class="me-2" src="<?= Url::to('@web/img/logo.png') ?>" alt="" height="100" width="100" />
+                                                    <img class="me-2" src="<?= Url::to('@web/img/logo.png') ?>" alt="" height="120" width="120" />
                                                 </div>
                                                 <div class=" text-center">
-                                                    <h3>Organisation Login</h3>
+                                                    <h3>Ministry of Home Affairs</h3>
+                                                </div>
+                                                <div class=" text-center">
+                                                    <h4>Client Login</h4>
                                                 </div>
                                             </div>
                                             <?= $content ?>

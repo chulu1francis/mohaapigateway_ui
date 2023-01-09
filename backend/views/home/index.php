@@ -64,6 +64,7 @@ if (User::isUserAllowedTo('Approve accreditations applications')) {
         $count++;
     }
 }
+
 ?>
 
 
@@ -163,7 +164,7 @@ if (User::isUserAllowedTo('Approve accreditations applications')) {
                                 'attribute' => 'Action',
                                 'format' => 'raw',
                                 'value' => function ($model) {
-                                     $route = $model->type == "National" ? "review-national" : "approve";
+                                     $route = $model->type == "National" ? "review-national" : "review";
                                     return Html::a("Review", ["accreditation-applications/".$route, 'id' => $model->id]);
                                 }
                             ]

@@ -110,6 +110,29 @@ JS;
                                     }
                                     ?>
                                 </li>
+                                 <li class="nav-item">
+                                    <?php
+                                    if (User::isUserAllowedTo("View requests")) {
+                                    if (Yii::$app->controller->id == "requests" && Yii::$app->controller->action->id == "index") {
+                                        echo Html::a(' <div class="d-flex align-items-center">
+                                            <span class="nav-link-icon">
+                                                <span class="fas fa-tasks"></span>
+                                            </span>
+                                             </span></span>
+                                            <span class="nav-link-text ps-1">Requests</span>
+                                        </div>', ['requests/index'], ["class" => "nav-link active"]);
+                                    } else {
+                                        echo Html::a(' <div class="d-flex align-items-center">
+                                            <span class="nav-link-icon">
+                                                <span class="fas fa-tasks"></span>
+                                            </span>
+                                            </span></span>
+                                            <span class="nav-link-text ps-1">Requests</span>
+                                        </div>', ['requests/index'], ["class" => "nav-link"]);
+                                    }
+                                    }
+                                    ?>
+                                </li>
 
                                 <li class="nav-item">
                                     <?php
@@ -180,15 +203,15 @@ JS;
 
                                 <li class="nav-item">
                                     <?php
-                                    if (User::isUserAllowedTo("View applications") ||
-                                             User::isUserAllowedTo("Approve accreditations applications")||
-                                             User::isUserAllowedTo("Review national accreditations")||
-                                            User::isUserAllowedTo("Review consultative accreditations")) {
+                                    if (User::isUserAllowedTo("View client users") ||
+                                            User::isUserAllowedTo("Manage client users") ||
+                                            User::isUserAllowedTo("View clients") ||
+                                            User::isUserAllowedTo("Manage clients")) {
                                         $show = "";
                                         $active = "";
                                         ?>
                                         <?php
-                                        if (Yii::$app->controller->id == "accreditation-applications"
+                                        if (Yii::$app->controller->id == "clients" || Yii::$app->controller->id == "client-users"
                                         ) {
                                             $show = "show";
                                             $active = "active";
@@ -197,43 +220,92 @@ JS;
                                         <a class="nav-link <?= $active ?> dropdown-indicator" href="#accreditations" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="accreditations">
                                             <div class="d-flex align-items-center">
                                                 <span class="nav-link-icon">
-                                                    <span class="fas fa-folder-open">
+                                                    <span class="fas fa-user-circle">
                                                     </span></span>
-                                                <span class="nav-link-text ps-1">Accreditations</span>
+                                                <span class="nav-link-text ps-1">Client Management</span>
                                             </div>
                                         </a>
 
                                         <ul class="nav collapse <?= $show ?>" id="accreditations">
                                             <?php
-                                            if (Yii::$app->controller->id == "accreditation-applications" &&
-                                                    (Yii::$app->controller->action->id == "consultative" ||
-                                                    Yii::$app->controller->action->id == "view" ||
-                                                    Yii::$app->controller->action->id == "review" ||
-                                                    Yii::$app->controller->action->id == "approve")) {
-                                                echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Consultative status</span></div>', ['accreditation-applications/consultative'], ["class" => 'nav-link active']) . '</li>';
-                                            } else {
-                                                echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Consultative status</span></div>', ['accreditation-applications/consultative'], ["class" => 'nav-link']) . '</li>';
+                                            if (User::isUserAllowedTo("Manage clients") || User::isUserAllowedTo("View clients")) {
+                                                if (Yii::$app->controller->id == "clients" &&
+                                                        (Yii::$app->controller->action->id == "index" ||
+                                                        Yii::$app->controller->action->id == "view" ||
+                                                        Yii::$app->controller->action->id == "create" ||
+                                                        Yii::$app->controller->action->id == "update")) {
+                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Clients</span></div>', ['clients/index'], ["class" => 'nav-link active']) . '</li>';
+                                                } else {
+                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Clients</span></div>', ['clients/index'], ["class" => 'nav-link']) . '</li>';
+                                                }
                                             }
 
+                                            if (User::isUserAllowedTo("Manage client users") || User::isUserAllowedTo("View client users")) {
+                                                if (Yii::$app->controller->id == "client-users" &&
+                                                        (Yii::$app->controller->action->id == "index" ||
+                                                        Yii::$app->controller->action->id == "create" ||
+                                                        Yii::$app->controller->action->id == "update" ||
+                                                        Yii::$app->controller->action->id == "view")) {
+                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Client users</span></div>', ['client-users/index'], ["class" => 'nav-link active']) . '</li>';
+                                                } else {
+                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Client users</span></div>', ['client-users/index'], ["class" => 'nav-link']) . '</li>';
+                                                }
+                                            }
+                                            ?>
 
-                                            if (Yii::$app->controller->id == "accreditation-applications" &&
-                                                    (Yii::$app->controller->action->id == "national" ||
-                                                    Yii::$app->controller->action->id == "view-national" ||
-                                                    Yii::$app->controller->action->id == "approve-national" ||
-                                                    Yii::$app->controller->action->id == "review-national")) {
-                                                echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">National status</span></div>', ['accreditation-applications/national'], ["class" => 'nav-link active']) . '</li>';
-                                            } else {
-                                                echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">National status</span></div>', ['accreditation-applications/national'], ["class" => 'nav-link']) . '</li>';
+                                        </ul>
+                                    <?php } ?>
+                                </li>
+                                <li class="nav-item">
+                                    <?php
+                                    if (User::isUserAllowedTo("View configurations") ||
+                                            User::isUserAllowedTo("View request charges") ||
+                                            User::isUserAllowedTo("Manage request charges") ||
+                                            User::isUserAllowedTo("Manage configurations")) {
+                                        $show = "";
+                                        $active = "";
+                                        ?>
+                                        <?php
+                                        if (Yii::$app->controller->id == "request-charges" || 
+                                                Yii::$app->controller->id == "general-configurations"
+                                        ) {
+                                            $show = "show";
+                                            $active = "active";
+                                        }
+                                        ?>
+                                        <a class="nav-link <?= $active ?> dropdown-indicator" href="#configs" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="configs">
+                                            <div class="d-flex align-items-center">
+                                                <span class="nav-link-icon">
+                                                    <span class="fas fa-cogs">
+                                                    </span></span>
+                                                <span class="nav-link-text ps-1">Configurations</span>
+                                            </div>
+                                        </a>
+
+                                        <ul class="nav collapse <?= $show ?>" id="configs">
+                                            <?php
+                                            if (User::isUserAllowedTo("Manage request charges") || User::isUserAllowedTo("View request charges")) {
+                                                if (Yii::$app->controller->id == "request-charges" &&
+                                                        (Yii::$app->controller->action->id == "index" ||
+                                                        Yii::$app->controller->action->id == "view" ||
+                                                        Yii::$app->controller->action->id == "create" ||
+                                                        Yii::$app->controller->action->id == "update")) {
+                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Request charges</span></div>', ['request-charges/index'], ["class" => 'nav-link active']) . '</li>';
+                                                } else {
+                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Request charges</span></div>', ['request-charges/index'], ["class" => 'nav-link']) . '</li>';
+                                                }
                                             }
 
-                                            if (Yii::$app->controller->id == "observer-applications" &&
-                                                    (Yii::$app->controller->action->id == "index" ||
-                                                    Yii::$app->controller->action->id == "view" ||
-                                                    Yii::$app->controller->action->id == "create" ||
-                                                    Yii::$app->controller->action->id == "update")) {
-                                                echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Observer status</span></div>', ['user/index'], ["class" => 'nav-link active']) . '</li>';
-                                            } else {
-                                                echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">Observer status</span></div>', ['user/index'], ["class" => 'nav-link']) . '</li>';
+                                            if (User::isUserAllowedTo("Manage configurations") || User::isUserAllowedTo("View configurations")) {
+                                                if (Yii::$app->controller->id == "general-configurations" &&
+                                                        (Yii::$app->controller->action->id == "index" ||
+                                                        Yii::$app->controller->action->id == "create" ||
+                                                        Yii::$app->controller->action->id == "update" ||
+                                                        Yii::$app->controller->action->id == "view")) {
+                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">General configs</span></div>', ['general-configurations/index'], ["class" => 'nav-link active']) . '</li>';
+                                                } else {
+                                                    echo '<li class="nav-item">' . Html::a('<div class="d-flex align-items-center"><span class="nav-link-text ps-1">General configs</span></div>', ['general-configurations/index'], ["class" => 'nav-link']) . '</li>';
+                                                }
                                             }
                                             ?>
 
@@ -258,9 +330,7 @@ JS;
                         </a>
 
                         <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
-                            <li class="nav-item">
-                                <div class="theme-control-toggle fa-icon-wait px-2"><input class="form-check-input ms-0 theme-control-toggle-input" id="themeControlToggle" type="checkbox" data-theme-control="theme" value="dark" /><label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Switch to light theme"><span class="fas fa-sun fs-0"></span></label><label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Switch to dark theme"><span class="fas fa-moon fs-0"></span></label></div>
-                            </li>
+
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link pe-0 ps-2" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -356,7 +426,7 @@ JS;
                         </div>
                         <div class="modal-footer justify-content-between">
 
-                            <button type="button" class="btn btn-falcon-danger btn-sm" data-bs-dismiss="modal">
+                            <button type="button" class="btn btn-falcon-success btn-sm" data-bs-dismiss="modal">
                                 <span class="fas fa-times-circle me-1" data-fa-transform="shrink-3"></span> Cancel
                             </button>
                             <?=

@@ -4,7 +4,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
-use frontend\models\Organisations;
+use frontend\models\ClientUsers;
 
 /**
  * Password reset request form
@@ -21,8 +21,8 @@ class PasswordResetRequestForm extends Model {
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'exist', 'targetClass' => '\frontend\models\Organisations',
-                'filter' => ['active' => Organisations::STATUS_ACTIVE], 'message' => 'There is no organisation registered with that email address!'
+            ['email', 'exist', 'targetClass' => '\frontend\models\ClientUsers',
+                'filter' => ['active' => ClientUsers::STATUS_ACTIVE], 'message' => 'There is no client user registered with that email address!'
             ],
         ];
     }
@@ -34,9 +34,9 @@ class PasswordResetRequestForm extends Model {
      * @throws \yii\base\Exception
      */
     public function sendEmail() {
-        /* @var $user Organisations */
-        $user = Organisations::findOne([
-                    'active' => Organisations::STATUS_ACTIVE,
+        /* @var $user ClientUsers */
+        $user = ClientUsers::findOne([
+                    'active' => ClientUsers::STATUS_ACTIVE,
                     'email' => $this->email,
         ]);
 
@@ -44,7 +44,7 @@ class PasswordResetRequestForm extends Model {
             return false;
         }
 
-        if (!Organisations::isPasswordResetTokenValid($user->password_reset_token)) {
+        if (!ClientUsers::isPasswordResetTokenValid($user->password_reset_token)) {
             $user->generatePasswordResetToken();
             if (!$user->save(false)) {
                 return false;
@@ -68,9 +68,9 @@ class PasswordResetRequestForm extends Model {
      * @return boolean
      */
     public function sendEmailAccountCreation($email) {
-        /* @var $user Organisations */
-        $user = Organisations::findOne([
-                    'active' => Organisations::STATUS_INACTIVE,
+        /* @var $user ClientUsers */
+        $user = ClientUsers::findOne([
+                    'active' => ClientUsers::STATUS_INACTIVE,
                     'email' => $email,
         ]);
 
@@ -80,7 +80,7 @@ class PasswordResetRequestForm extends Model {
 
 
 
-        if (!Organisations::isPasswordResetTokenValid($user->password_reset_token)) {
+        if (!ClientUsers::isPasswordResetTokenValid($user->password_reset_token)) {
             $user->generatePasswordResetToken();
             if (!$user->save(false)) {
                 return false;

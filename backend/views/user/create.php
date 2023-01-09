@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="col-auto ms-3 ps-3 " id="emails-actions">
                     <div class="btn-group btn-group-sm">
                         <?=
-                        Html::a('<span class="fas fa-arrow-left me-1" data-fa-transform="shrink-3"></span> Back', ['index'], ["class" => 'btn btn-falcon-default btn-sm']);
+                        Html::a('<span class="fas fa-arrow-left me-1" data-fa-transform="shrink-3"></span> Back', ['index'], ["class" => 'btn '.Yii::$app->params['btnClassFalcon'].' btn-sm']);
                         ?>
                     </div>
                 </div>

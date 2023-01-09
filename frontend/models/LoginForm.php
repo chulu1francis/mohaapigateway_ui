@@ -4,7 +4,8 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
-use frontend\models\Organisations;
+use frontend\models\ClientUsers;
+
 /**
  * Login form
  */
@@ -29,7 +30,7 @@ class LoginForm extends Model {
             ['rememberMe', 'boolean'],
             ['password', 'validatePassword'],
             [['username', 'password', 'verifyCode'], 'required', 'on' => 'captchaRequired'],
-            ['verifyCode', 'captcha', 'captchaAction' => '/site/captcha', 'on' => 'captchaRequired','message' => "Captcha code is incorrect!"], // add this code to your rules.
+            ['verifyCode', 'captcha', 'captchaAction' => '/site/captcha', 'on' => 'captchaRequired', 'message' => "Captcha code is incorrect!"], // add this code to your rules.
         ];
     }
 
@@ -50,8 +51,13 @@ class LoginForm extends Model {
     public function validatePassword($attribute, $params) {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
+
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, 'Incorrect email or password.');
+            }
+
+            if (!$this->getClientStatus()) {
+                $this->addError($attribute, 'Client is suspended. Please contact system administrator!');
             }
         }
     }
@@ -76,10 +82,22 @@ class LoginForm extends Model {
      */
     protected function getUser() {
         if ($this->_user === null) {
-            $this->_user = Organisations::findByUsername($this->username);
+            $this->_user = ClientUsers::findByUsername($this->username);
         }
 
         return $this->_user;
+    }
+
+    protected function getClientStatus() {
+        $_active = false;
+        if ($this->_user === null) {
+            $this->_user = ClientUsers::findByUsername($this->username);
+            $_active = $this->_user->client0->active == 1 ? true : false;
+        } else {
+            $_active = $this->_user->client0->active == 1 ? true : false;
+        }
+
+        return $_active;
     }
 
 }

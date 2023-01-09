@@ -80,7 +80,7 @@ $form->field($model, 'password', [
 </div>
 
 <div class="form-group">
-    <?= Html::submitButton('Sign in', ['class' => 'btn btn-sm ' . Yii::$app->params['btnClass'] . ' me-1 mb-1 d-block w-100 mt-3', 'name' => 'login-button']) ?>
+    <?= Html::submitButton('Sign in', ['class' => 'btn ' . Yii::$app->params['btnClass'] . ' me-1 mb-1 d-block w-100 mt-3', 'name' => 'login-button']) ?>
 </div>
 
 <?php ActiveForm::end(); ?>

@@ -122,7 +122,8 @@ td .es-button-border-3:hover {
                    <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-position:left top" width="100%" cellspacing="0" cellpadding="0" role="presentation">
                      <tr style="border-collapse:collapse">
                       <td style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px;font-size:0" align="center">
-                        <img src="https://lh3.googleusercontent.com/pw/AL9nZEWzi2Cz0S66pFnT9BNyiClIVT_iBSZcl-T0uQWiOqhUl-dzPo4W7H3Jw8qJoyDGJUu_0uqv1zG2djMFi3JJMQAcbtIRaO_gebdkIaOD40-1zwRe3lZd5JLo92iJ8z8-jmkdTNHAZkPjFe0l8bO1LXPvYw=w1157-h409-no?authuser=0" class="CToWUd" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="175"></td>
+                        <img src="https://lh3.googleusercontent.com/pw/AL9nZEX3zvI7DnQazPJt3Mw09jJn1LFVBWb7ZxlUYRLjvOEbk2aEu9o02j6lA5R3aggc5DH-ruyHEVy_W6cixeMwibNyjLMAHSiDiqaJIaVrjMcyEbEd4qoQ5mdQn2SKRSsWIRYPi9zgLhZC63N-mPPyQXyVqw=w568-h656-no?authuser=0" class="CToWUd" alt style="display:block;border:0;outline:none;text-decoration:none;" width="175">
+                      </td>
                      </tr>
                      <tr style="border-collapse:collapse">
                       <td align="left" style="padding:0;Margin:0;padding-top:15px;padding-bottom:15px">

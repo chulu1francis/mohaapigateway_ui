@@ -72,7 +72,10 @@ AppAsset::register($this);
                                     </div>
                                     <div class="col-lg-12 text-center">&nbsp;</div>
                                     <div class="col-lg-12 text-center fs--1">
-                                        <h3><?= Yii::$app->params['siteName'] ?> Staff login</h3>
+                                        <h4><?= Yii::$app->params['siteName'] ?></h4>
+                                    </div>
+                                    <div class="col-lg-12 text-center fs--1">
+                                        <h5>Staff login</h5>
                                     </div>
                                     <hr>
                                 </div>

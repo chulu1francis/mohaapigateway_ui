@@ -33,7 +33,7 @@ $fullExportMenu = "";
                         if (User::isUserAllowedTo('Manage groups')) {
                             echo Html::a('<span class="fas fa-plus me-1" data-fa-transform="shrink-3"></span> Add group', ['create'],
                                     [
-                                        'class' => 'btn btn-outline-success me-1 mb-1',
+                                        'class' => Yii::$app->params['btnClassFalcon'].' me-1 mb-1',
                                         'title' => 'Add user group',
                                         'data-bs-toggle' => 'tooltip',
                                         'data-bs-placement' => 'top',
@@ -79,7 +79,7 @@ $fullExportMenu = "";
                                 'data-bs-placement' => 'top',
                                 'data-pjax' => '0',
                                 'style' => "padding:5px;",
-                                'class' => 'col-auto btn-group btn-group-sm btn ' . Yii::$app->params['btnClass'],
+                                'class' => 'col-auto btn-group btn-group-sm '. Yii::$app->params['btnClassFalcon'],
                                     ]
                             );
                         },
@@ -91,7 +91,7 @@ $fullExportMenu = "";
                                             'data-bs-toggle' => 'tooltip',
                                             'data-bs-placement' => 'top',
                                             'data-pjax' => '0',
-                                            'class' => 'col-auto btn-group btn-group-sm btn ' . Yii::$app->params['btnClass'],
+                                            'class' => 'col-auto btn-group btn-group-sm '. Yii::$app->params['btnClassFalcon'],
                                             'style' => "padding:5px;",
                                                 ]
                                 );
@@ -104,7 +104,7 @@ $fullExportMenu = "";
                                             'title' => 'Delete',
                                             'data-bs-toggle' => 'tooltip',
                                             'data-bs-placement' => 'top',
-                                            'class' => 'col-auto btn-group btn-group-sm btn ' . Yii::$app->params['btnClass'],
+                                            'class' => 'col-auto btn-group btn-group-sm '.Yii::$app->params['btnClassFalcon'] ,
                                             'data' => [
                                                 'confirm' => 'Are you sure you want to delete this user group?<br>'
                                                 . 'The group will only be removed if no user is assigned to the group',

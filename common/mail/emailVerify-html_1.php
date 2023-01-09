@@ -6,7 +6,10 @@ use Yii;
 /* @var $this yii\web\View */
 /* @var $user common\models\User */
 
-$verifyLink = Yii::$app->urlManager->createAbsoluteUrl(['site/set-password', 'token' => $user->password_reset_token]);
+$link = Yii::$app->urlManager->createAbsoluteUrl(['site/set-password', 'token' => $user->password_reset_token]);
+$verifyLink = str_replace("administration/", "", $link);
+
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" style="width:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0">
@@ -122,21 +125,23 @@ td .es-button-border-3:hover {
                    <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-position:left top" width="100%" cellspacing="0" cellpadding="0" role="presentation">
                      <tr style="border-collapse:collapse">
                       <td style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px;font-size:0" align="center">
-                        <img src="https://lh3.googleusercontent.com/pw/AL9nZEWzi2Cz0S66pFnT9BNyiClIVT_iBSZcl-T0uQWiOqhUl-dzPo4W7H3Jw8qJoyDGJUu_0uqv1zG2djMFi3JJMQAcbtIRaO_gebdkIaOD40-1zwRe3lZd5JLo92iJ8z8-jmkdTNHAZkPjFe0l8bO1LXPvYw=w1157-h409-no?authuser=0" class="CToWUd" alt style="display:block;border:0;outline:none;text-decoration:none;" width="175"></td>
+                        <img src="https://lh3.googleusercontent.com/pw/AL9nZEX3zvI7DnQazPJt3Mw09jJn1LFVBWb7ZxlUYRLjvOEbk2aEu9o02j6lA5R3aggc5DH-ruyHEVy_W6cixeMwibNyjLMAHSiDiqaJIaVrjMcyEbEd4qoQ5mdQn2SKRSsWIRYPi9zgLhZC63N-mPPyQXyVqw=w568-h656-no?authuser=0" class="CToWUd" alt style="display:block;border:0;outline:none;text-decoration:none;" width="175">
+                      </td>
                      </tr>
                      <tr style="border-collapse:collapse">
                       <td align="left" style="padding:0;Margin:0;padding-top:15px;padding-bottom:15px">
                           <h1 style="Margin:0;line-height:19px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:16px;font-style:normal;font-weight:normal;color:#333333">
                               <strong>
-                                  Hello <?=$user->name." organisation"?>!<br>
+                                  Hello <?=$user->last_name?>!<br>
                               </strong>
                           </h1></td>
                      </tr>
                      <tr style="border-collapse:collapse">
                       <td align="center" style="padding:0;Margin:0;padding-right:35px">
                           <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;font-size:14px">
-                              You are just one step away from completing your registration on <?=Yii::$app->params['siteName']?> Portal! <br>
-                              Click the button below to complete the registration
+                              Welcome to <?=Yii::$app->params['siteName']?>! <br>
+                              You have been registered as a client user for <strong><?=$user->client0->name?></strong>.<br>
+                              Activate your account by clicking the button below
                           </p>
                       </td>
                      </tr>
@@ -144,7 +149,7 @@ td .es-button-border-3:hover {
                       <td align="center" style="Margin:0;padding-left:5px;padding-right:10px;padding-top:20px;padding-bottom:20px">
                           <span class="es-button-border-3 es-button-border" style="border-style:solid;border-color:#8fe467;background:#ffffff;border-width:2px;display:inline-block;border-radius:30px;width:auto">
                               <?=
-                                Html::a("Complete registration", $verifyLink, [
+                                Html::a("Activate", $verifyLink, [
                                     'style' => "mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#333333;font-size:10px;border-style:solid;border-color:#FFFFFF;border-width:10px 15px;display:inline-block;background:#FFFFFF;border-radius:30px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:bold;font-style:normal;line-height:12px;width:auto;text-align:center",
                                     'class' => 'btn btn-falcon-default btn-sm text-uppercase'
                                 ])

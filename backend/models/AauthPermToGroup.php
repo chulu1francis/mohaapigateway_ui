@@ -120,6 +120,4 @@ class AauthPermToGroup extends ActiveRecord {
         return \yii\helpers\ArrayHelper::map($rights, 'id', 'name');
     }
 
-  
-
 }

@@ -72,7 +72,7 @@ AppAsset::register($this);
                                     </div>
                                     <div class="col-lg-12 text-center">&nbsp;</div>
                                     <div class="col-lg-12 text-center fs--1">
-                                        <h4>Organisation password reset</h4>
+                                        <h4>Client user password reset</h4>
                                     </div>
                                     <hr>
                                 </div>

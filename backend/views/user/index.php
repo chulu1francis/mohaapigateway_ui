@@ -36,7 +36,7 @@ $fullExportMenu = "";
                             $read_only = false;
                             echo Html::a('<span class="fas fa-plus me-1" data-fa-transform="shrink-3"></span> Add user', ['create'],
                                     [
-                                        'class' => 'btn btn-outline-success me-1 mb-1',
+                                        'class' => Yii::$app->params['btnClassFalcon']. ' me-1 mb-1',
                                         'title' => 'Add new user',
                                         'data-bs-toggle' => 'tooltip',
                                         'data-bs-placement' => 'top',
@@ -172,7 +172,7 @@ $gridColumns = [
                     'data-bs-placement' => 'top',
                     'data-pjax' => '0',
                     'style' => "padding:5px;",
-                    'class' => 'col-auto btn-group btn-group-sm btn ' . Yii::$app->params['btnClass'],
+                    'class' => 'col-auto btn-group btn-group-sm '.Yii::$app->params['btnClassFalcon'],
                         ]
                 );
             },
@@ -184,7 +184,7 @@ $gridColumns = [
                                 'data-bs-toggle' => 'tooltip',
                                 'data-bs-placement' => 'top',
                                 'data-pjax' => '0',
-                                'class' => 'col-auto btn-group btn-group-sm btn ' . Yii::$app->params['btnClass'],
+                                'class' => 'col-auto btn-group btn-group-sm ' .Yii::$app->params['btnClassFalcon'],
                                 'style' => "padding:5px;",
                                     ]
                     );
@@ -197,7 +197,7 @@ $gridColumns = [
                                 'title' => 'Delete',
                                 'data-bs-toggle' => 'tooltip',
                                 'data-bs-placement' => 'top',
-                                'class' => 'col-auto btn-group btn-group-sm btn ' . Yii::$app->params['btnClass'],
+                                'class' => 'col-auto btn-group btn-group-sm '.Yii::$app->params['btnClassFalcon'],
                                 'data' => [
                                     'confirm' => 'Are you sure you want to delete this user group?<br>'
                                     . 'The group will only be removed if no user is assigned to the group',
@@ -247,7 +247,7 @@ if (!empty($dataProvider) && $dataProvider->getCount() > 0) {
                 ],
                 'columnSelectorOptions' => [
                     'label' => 'Cols...',
-                    'class' => 'btn btn-falcon-default',
+                    'class' => Yii::$app->params['btnClassFalcon'],
                 //'title' => 'Select columns to export',
                 ],
                 'batchSize' => 500,
@@ -267,7 +267,7 @@ if (!empty($dataProvider) && $dataProvider->getCount() > 0) {
                 ],
                 'dropdownOptions' => [
                     'label' => 'Export data',
-                    'class' => 'btn btn-falcon-default',
+                    'class' => Yii::$app->params['btnClassFalcon'],
                     'title' => 'Export grid data',
                     'itemsBefore' => [
                         '<div class="dropdown-header">Export All Data</div>',

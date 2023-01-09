@@ -31,13 +31,13 @@ $this->params['breadcrumbs'][] = $model->name;
                                         'title' => 'Update group',
                                         'data-bs-toggle' => 'tooltip',
                                         'data-bs-placement' => 'top',
-                                        'class' => 'btn btn-falcon-default'
+                                        'class' => Yii::$app->params['btnClassFalcon']
                             ]);
                             echo Html::a('<span class="fas fa-trash-alt"></span>', ['delete', 'id' => $model->id], [
-                                'title' => 'Delete role',
+                                'title' => 'Delete group',
                                 'data-bs-toggle' => 'tooltip',
                                 'data-bs-placement' => 'top',
-                                'class' => 'btn btn-falcon-default',
+                                'class' => Yii::$app->params['btnClassFalcon'],
                                 'data' => [
                                     'confirm' => 'Are you sure you want to delete this user group?<br>'
                                     . 'The group will only be removed if no user is assigned to the group',

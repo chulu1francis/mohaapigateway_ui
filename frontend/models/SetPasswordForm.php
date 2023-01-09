@@ -4,7 +4,7 @@ namespace frontend\models;
 
 use yii\base\Model;
 use yii\base\Exception;
-use backend\models\User;
+use frontend\models\ClientUsers;
 use kartik\password\StrengthValidator;
 
 /**
@@ -32,7 +32,7 @@ class SetPasswordForm extends Model {
         if (empty($token) || !is_string($token)) {
             throw new Exception('Token expired!.');
         }
-        $this->_user = Organisations::findByPasswordResetTokenInactiveAccount($token);
+        $this->_user = ClientUsers::findByPasswordResetTokenInactiveAccount($token);
         if (!$this->_user) {
             throw new Exception('Token expired');
         }

@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-lg-6">
         <div class="card mb-3">
             <div class="card-header position-relative min-vh-25 mb-7">
-                <div class="bg-holder rounded-3 rounded-bottom-0" style="background-image:url(<?= Url::to('@web/img/bg1.jpg') ?>);">
+                <div class="bg-holder rounded-3 rounded-bottom-0" style="background-image:url(<?= Url::to('@web/img/bg.jpg') ?>);">
                 </div>
                 <!--/.bg-holder-->
 
@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'title' => 'Update user',
                                         'data-bs-toggle' => 'tooltip',
                                         'data-bs-placement' => 'top',
-                                        'class' => 'btn btn-falcon-primary btn-sm px-3'
+                                        'class' => 'btn '.Yii::$app->params['btnClassFalcon'].' btn-sm px-3'
                             ]);
                         }
                         ?>

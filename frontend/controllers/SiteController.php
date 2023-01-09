@@ -15,7 +15,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
-use frontend\models\Organisations;
+use \frontend\models\ClientUsers;
 use yii\helpers\Json;
 use yii\web\UploadedFile;
 use backend\models\ResetPasswordForm_1;
@@ -83,8 +83,7 @@ class SiteController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        $this->layout = 'landing';
-        return $this->render('index');
+        return $this->redirect(['login']);
     }
 
     /**
@@ -109,9 +108,6 @@ class SiteController extends Controller {
                 $this->counter = 0;
                 Yii::$app->session['captchaRequired'] = 0;
 
-                $organisation = Organisations::findOne(Yii::$app->getUser()->identity->id);
-                $session = Yii::$app->session;
-                $session->set('logo', $organisation->logo);
                 return $this->redirect(['home/index']);
             } else {
                 $model->password = '';
@@ -283,9 +279,9 @@ class SiteController extends Controller {
      * @throws BadRequestHttpException
      */
     public function actionSetPassword($token) {
-        $user = Organisations::findByPasswordResetTokenInactiveAccount($token);
+        $user = ClientUsers::findByPasswordResetTokenInactiveAccount($token);
         if (!$user) {
-            Yii::$app->session->setFlash('error', 'Organisation account activation token expired. Contact  support!');
+            Yii::$app->session->setFlash('error', 'Account activation token expired. Contact  support!');
             return $this->redirect(['login']);
         }
 
@@ -293,18 +289,18 @@ class SiteController extends Controller {
             $this->layout = 'setpassword';
             $model = new \frontend\models\SetPasswordForm($token);
         } catch (Exception $e) {
-            Yii::$app->session->setFlash('error', 'Organisation account activation token expired. Contact support!.');
+            Yii::$app->session->setFlash('error', 'Account activation token expired. Contact support!.');
             return $this->redirect(['login']);
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'Organisation registration was successfully completed. Login into your account!');
+            Yii::$app->session->setFlash('success', 'Account activation was successfully completed. Login into your account!');
             return $this->redirect(['login']);
         }
 
         return $this->render('setPassword', [
                     'model' => $model,
-                    'organisation' => $user->name
+                    'client' => \backend\models\Clients::findOne($user->client)
         ]);
     }
 

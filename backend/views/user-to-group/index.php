@@ -51,7 +51,7 @@ $read_only = true;
                         <?php
                         if (backend\models\User::isUserAllowedTo('Manage user to group')) {
                             $read_only = false;
-                            echo '<button class="btn btn-outline-success btn-sm me-1 mb-1" type="button" data-bs-toggle="modal" data-bs-target="#submitInfo">
+                            echo '<button class="'.Yii::$app->params['btnClassFalcon'].' btn-sm me-1 mb-1" type="button" data-bs-toggle="modal" data-bs-target="#submitInfo">
                               Assign user to group
                             </button>';
                         }
@@ -152,7 +152,7 @@ $read_only = true;
                                             'title' => 'Revoke',
                                             'data-bs-toggle' => 'tooltip',
                                             'data-bs-placement' => 'top',
-                                            'class' => 'col-auto btn-group btn-group-sm btn ' . Yii::$app->params['btnClass'],
+                                            'class' => 'col-auto btn-group btn-group-sm ' . Yii::$app->params['btnClassFalcon'],
                                             'data' => [
                                                 'confirm' => 'Are you sure you want to revoke this user group assignment?<br>'
                                                 . 'The user will not be able to access system functionalities associated with this user group',

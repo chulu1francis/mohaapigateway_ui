@@ -8,28 +8,28 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'aucsoap-backend',
+    'id' => 'moha_api_gateway-backend',
     'name' => $params['siteName'],
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
-    'homeUrl' => '/admin',
+    'homeUrl' => '/administration',
     'components' => [
         'request' => [
-            'csrfParam' => 'aucsoap_csrf-backend',
+            'csrfParam' => 'moha_api_gateway_csrf-backend',
             'csrfCookie' => [
                 'httpOnly' => true,
                 'secure' => true,
             ],
-            'baseUrl' => '/admin'
+            'baseUrl' => '/administration'
         ],
         'user' => [
             'identityClass' => 'backend\models\User',
             'enableAutoLogin' => false,
             'loginUrl' => ['site/login'],
             'authTimeout' => 900, //15minutes
-            'identityCookie' => ['name' => 'aucsoap_identity-backend', 'httpOnly' => true],
+            'identityCookie' => ['name' => 'moha_api_gateway_identity-backend', 'httpOnly' => true],
         ],
         'session' => [
             'class' => 'yii\redis\Session',
@@ -39,22 +39,30 @@ return [
                 'port' => 6379,
                 'database' => 0,
             ],
-            'name' => 'aucsoap-backend',
+            'name' => 'moha_api_gateway-backend',
             'cookieParams' => [
                 'lifetime' => 1 * 24 * 60 * 60,
             ],
         ],
         'cache' => [
-            'class' => 'yii\caching\MemCache',
-            'servers' => [
-                [
-                    'host' => '127.0.0.1',
-                    'port' => 11211,
-                    'weight' => 100,
-                ],
-            ],
-            'useMemcached' => true,
+            'class' => 'yii\redis\Cache',
+            'redis' => [
+                'hostname' => 'localhost',
+                'port' => 6379,
+                'database' => 0,
+            ]
         ],
+//        'cache' => [
+//            'class' => 'yii\caching\MemCache',
+//            'servers' => [
+//                [
+//                    'host' => '127.0.0.1',
+//                    'port' => 11211,
+//                    'weight' => 100,
+//                ],
+//            ],
+//            'useMemcached' => true,
+//        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
