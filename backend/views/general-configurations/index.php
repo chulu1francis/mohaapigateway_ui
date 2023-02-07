@@ -1,11 +1,12 @@
 <?php
 
 use kartik\grid\EditableColumn;
-use kbackend\models\User;
+use backend\models\User;
 use kartik\grid\GridView;
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
 use kartik\popover\PopoverX;
+use kartik\export\ExportMenu;
 
 /** @var yii\web\View $this */
 /** @var backend\models\ConfigurationsSearch $searchModel */

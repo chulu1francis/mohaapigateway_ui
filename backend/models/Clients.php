@@ -117,6 +117,15 @@ class Clients extends \yii\db\ActiveRecord {
     }
 
     /**
+     * Gets query for [[ClientEndpoints]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getClientEndpoints() {
+        return $this->hasMany(ClientEndpoints::class, ['client' => 'id']);
+    }
+
+    /**
      * Gets query for [[ClientIpWhitelists]].
      *
      * @return \yii\db\ActiveQuery
@@ -166,8 +175,8 @@ class Clients extends \yii\db\ActiveRecord {
         $list = ArrayHelper::map($groups, 'name', 'name');
         return $list;
     }
-    
-      public static function getClients() {
+
+    public static function getClients() {
         $groups = self::find()->orderBy(['name' => SORT_ASC])->all();
         $list = ArrayHelper::map($groups, 'id', 'name');
         return $list;

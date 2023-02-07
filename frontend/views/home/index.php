@@ -3,12 +3,12 @@
 
 use yii\helpers\Html;
 use kartik\detail\DetailView;
-use backend\models\User;
 use backend\models\Requests;
 use yii\data\ActiveDataProvider;
 use kartik\grid\GridView;
 use backend\models\AvailableAttributes;
-use kartik\form\ActiveForm;
+Use backend\models\AvailableEndpoints;
+use backend\models\ClientEndpoints;
 use \yii\data\ArrayDataProvider;
 
 /** @var yii\web\View $this */
@@ -19,9 +19,23 @@ $this->params['breadcrumbs'][] = $this->title;
 $cache = Yii::$app->cache;
 $apiKey = $cache->get("C" . $model->id);
 
-$query = Requests::find()
-        ->where(['client' => $model->id]);
-$dataProvider = new ActiveDataProvider(['query' => $query,]);
+$amountOwing = Requests::find()
+        ->select(['amount'])
+        ->where(['client' => $model->id])
+        ->andWhere(['payment_status' => 0])
+        ->sum('amount');
+
+$clientRequests = $model->requests;
+
+$dataProvider = new ArrayDataProvider([
+    'allModels' => $clientRequests,
+    'sort' => [
+        'attributes' => ['id'],
+    ],
+    'pagination' => [
+        'pageSize' => 20,
+    ],
+        ]);
 
 $clientUsers = $model->clientUsers;
 
@@ -42,7 +56,23 @@ $dataProviderClientUsers = new ArrayDataProvider([
         <div class="row align-items-center">
             <div class="col d-flex align-items-center">
                 <div class="col-auto align-self-center">
-                    <h5 class="fs-0 px-3 pt-3 pb-2 mb-0 "><?= $this->title ?></h5>
+                    <?php
+                    if ($model->can_pay == "Yes") {
+                        ?>
+                        <span class="fs-1">
+                            Total request charges ZMW 
+                        </span>
+                        <span class="fs-3 fw-bolder text-danger" data-countup='{"endValue":<?= $amountOwing ?>}'>
+                            0
+                        </span>
+                        <?php
+//                    if (Yii::$app->getUser()->identity->group0->name == "ADMIN" && $amountOwing > 0) {
+//                        echo '<a class="btn btn-success btn-sm p-1" type="button" data-bs-toggle="modal" data-bs-target="#submitInfo">
+//                              Settle ZMW ' . $amountOwing . '
+//                            </a>';
+//                    }
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -111,7 +141,7 @@ $dataProviderClientUsers = new ArrayDataProvider([
                         <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-1ada879e-dfbf-4f1f-80c9-26162e1a44ed" id="dom-1ada879e-dfbf-4f1f-80c9-26162e1a44ed">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item"><a class="nav-link active text-uppercase" id="apikey-tab" data-bs-toggle="tab" href="#tab-apikey" role="tab" aria-controls="tab-apikey" aria-selected="true" >API secret key</a></li>
-                                
+                                <li class="nav-item"><a class="nav-link text-uppercase" id="endpoints-tab" data-bs-toggle="tab" href="#tab-endpoints" role="tab" aria-controls="tab-endpoints" aria-selected="false">Allowed Endpoints</a></li>
                                 <li class="nav-item"><a class="nav-link text-uppercase" id="profile-tab" data-bs-toggle="tab" href="#tab-areasofexpertise" role="tab" aria-controls="tab-areasofexpertise" aria-selected="false">Attributes</a></li>
                                 <li class="nav-item"><a class="nav-link text-uppercase" id="regdetails-tab" data-bs-toggle="tab" href="#tab-regdetails" role="tab" aria-controls="tab-regdetails" aria-selected="false">Whitelisted IP</a></li>
                                 <li class="nav-item"><a class="nav-link text-uppercase" id="contact-tab" data-bs-toggle="tab" href="#tab-contact" role="tab" aria-controls="tab-contact" aria-selected="false">Users</a></li>
@@ -120,13 +150,13 @@ $dataProviderClientUsers = new ArrayDataProvider([
                                 <div class="tab-pane fade show active" id="tab-apikey" role="tabpanel" aria-labelledby="apikey-tab">
                                     <div class="row">
                                         <div class="col-lg-12 text-center"> 
-                                           
+
                                             <?php
                                             if (!empty($apiKey)) {
                                                 echo '<div class="row"><div class="col-lg-12 text-center">'
                                                 . '<p>Use below key together with the client code to access API services</p>'
                                                 . ' <div class="alert alert-success border-2  align-items-center" role="alert">
-                                                <p class="mb-0 flex-1">'.$apiKey.'</p>
+                                                <p class="mb-0 flex-1">' . $apiKey . '</p>
                                             </div></div>'
                                                 . ' <div class="col-lg-12">&nbsp; </div>';
                                                 echo ' <div class="col-lg-12 text-center">
@@ -148,7 +178,29 @@ $dataProviderClientUsers = new ArrayDataProvider([
                                         </div>
                                     </div>
                                 </div>
-                              
+                                <div class="tab-pane fade" id="tab-endpoints" role="tabpanel" aria-labelledby="endpoints-tab">
+                                    <div class="row"> 
+                                        <div class="col-lg-12"> 
+                                            <?php
+                                            $arrayEndpoints = [];
+                                            if (!empty($model->clientEndpoints)) {
+                                                echo "<ol><h5>";
+                                                foreach ($model->clientEndpoints as $endpoint) {
+                                                    $endpointName = AvailableEndpoints::findOne(['search_key' => $endpoint['endpoint']]);
+                                                    array_push($arrayEndpoints, $endpoint['endpoint']);
+                                                    echo "<li>" . $endpointName->name . " - " . $endpointName->endpoint . "</li>";
+                                                }
+                                                echo "</h5></ol>";
+                                            } else {
+                                                echo '<div class="col-lg-12 py-3 text-center">'
+                                                . '<span class="badge me-1 py-2 badge-soft-warning fs--1">You have not been allowed to access any API endpoint. Contact system administrator</span>'
+                                                . '</div>';
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="tab-pane fade" id="tab-areasofexpertise" role="tabpanel" aria-labelledby="areasofexpertise-tab">
                                     <div class="row"> 
                                         <div class="col-lg-12"> 

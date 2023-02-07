@@ -11,21 +11,19 @@ use Yii;
  * @property string $attribute
  * @property string $name
  */
-class AvailableAttributes extends \yii\db\ActiveRecord
-{
+class AvailableAttributes extends \yii\db\ActiveRecord {
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'available_attributes';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['attribute', 'name'], 'required'],
             [['attribute', 'name'], 'string'],
@@ -35,16 +33,16 @@ class AvailableAttributes extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'attribute' => 'Attribute',
             'name' => 'Name',
         ];
     }
-    
-      public static function getAvailableAttributes() {
+
+    public static function getAvailableAttributes() {
         return static::find()->cache(Yii::$app->params['cacheDuration'])->orderBy('attribute')->all();
     }
+
 }

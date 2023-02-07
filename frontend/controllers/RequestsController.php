@@ -85,22 +85,6 @@ class RequestsController extends Controller {
       
     }
 
-    /**
-     * Displays a single Requests model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-//    public function actionView($id) {
-//        if (User::isUserAllowedTo("View requests")) {
-//            return $this->render('view', [
-//                        'model' => $this->findModel($id),
-//            ]);
-//        } else {
-//            Yii::$app->session->setFlash('error', 'You are not authorised to perform that action. This action will be reported');
-//            return $this->redirect(['home/index']);
-//        }
-//    }
 
     /**
      * Finds the Requests model based on its primary key value.

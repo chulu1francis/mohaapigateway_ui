@@ -20,10 +20,10 @@ class HomeController extends \yii\web\Controller {
                 [
                     'access' => [
                         'class' => AccessControl::className(),
-                        'only' => ['index', 'generate-key', 'update-logo'],
+                        'only' => ['index', 'generate-key'],
                         'rules' => [
                             [
-                                'actions' => ['index', 'generate-key', 'update-logo'],
+                                'actions' => ['index', 'generate-key'],
                                 'allow' => true,
                                 'roles' => ['@'],
                             ],

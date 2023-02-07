@@ -24,27 +24,15 @@ $fullExportMenu = "";
             $gridColumns = [
                 ['class' => 'yii\grid\SerialColumn'],
                 // 'id',
-                [
-                    'label' => 'Client',
-                    'attribute' => 'client',
-                    'format' => 'raw',
-                    'filterType' => GridView::FILTER_SELECT2,
-                    'filterWidgetOptions' => [
-                        'pluginOptions' => ['allowClear' => true],
-                    ],
-                    'filter' => Clients::getClients(),
-                    'filterInputOptions' => ['prompt' => 'Filter by client', 'class' => 'form-control', 'id' => null],
-                    'attribute' => 'client',
-                    'format' => 'raw',
-                    'value' => function ($model) {
-                        return Html::a($model->client0->name, ['clients/view', 'id' => $model->client], [
-                            'title' => 'View client',
-                            'data-toggle' => 'tooltip',
-                            'data-placement' => 'top',
-                                ]
-                        );
-                    },
-                ],
+//                [
+//                    'label' => 'Client',
+//                    'filter' => false,
+//                    'attribute' => 'client',
+//                    'format' => 'raw',
+//                    'value' => function ($model) {
+//                      return $model->client0->name;
+//                    },
+//                ],
                 [
                     'label' => 'Path',
                     'filter' => false,

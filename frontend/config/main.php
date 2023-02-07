@@ -20,7 +20,7 @@ return [
             'csrfParam' => 'moha_api_gateway_csrf-frontend',
             'csrfCookie' => [
                 'httpOnly' => true,
-                'secure' => true,
+                'secure' => false,
             ],
             'baseUrl' => ''
         ],
@@ -42,7 +42,7 @@ return [
             'name' => 'moha_api_gateway-frontend',
             'cookieParams' => [
                 'lifetime' => 1 * 24 * 60 * 60,
-                'secure' => true,
+                'secure' => false,
             ],
         ],
          'cache' => [

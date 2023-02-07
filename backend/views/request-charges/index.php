@@ -234,7 +234,7 @@ $fullExportMenu = "";
 
             <div class="modal-body p-0">
                 <div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
-                    <h4 class="mb-1" id="staticBackdropLabel">Assign user to a user group</h4>
+                    <h4 class="mb-1" id="staticBackdropLabel">Add request charge</h4>
                 </div>
                 <div class="p-4">
                     <div class="row">

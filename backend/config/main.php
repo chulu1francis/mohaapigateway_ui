@@ -20,7 +20,7 @@ return [
             'csrfParam' => 'moha_api_gateway_csrf-backend',
             'csrfCookie' => [
                 'httpOnly' => true,
-                'secure' => true,
+                'secure' => false,
             ],
             'baseUrl' => '/administration'
         ],
@@ -29,7 +29,10 @@ return [
             'enableAutoLogin' => false,
             'loginUrl' => ['site/login'],
             'authTimeout' => 900, //15minutes
-            'identityCookie' => ['name' => 'moha_api_gateway_identity-backend', 'httpOnly' => true],
+            'identityCookie' => [
+                'name' => 'moha_api_gateway_identity-backend',
+                'httpOnly' => true
+                ],
         ],
         'session' => [
             'class' => 'yii\redis\Session',

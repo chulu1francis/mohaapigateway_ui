@@ -92,9 +92,9 @@ class LoginForm extends Model {
         $_active = false;
         if ($this->_user === null) {
             $this->_user = ClientUsers::findByUsername($this->username);
-            $_active = $this->_user->client0->active == 1 ? true : false;
+            $_active =!empty($this->_user) && $this->_user->client0->active == 1 ? true : false;
         } else {
-            $_active = $this->_user->client0->active == 1 ? true : false;
+            $_active = !empty($this->_user) && $this->_user->client0->active == 1 ? true : false;
         }
 
         return $_active;

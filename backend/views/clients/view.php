@@ -9,6 +9,8 @@ use kartik\grid\GridView;
 use backend\models\AvailableAttributes;
 use kartik\form\ActiveForm;
 use \yii\data\ArrayDataProvider;
+Use backend\models\AvailableEndpoints;
+use backend\models\ClientEndpoints;
 
 /** @var yii\web\View $this */
 /** @var backend\models\Clients $model */
@@ -17,9 +19,23 @@ $this->params['breadcrumbs'][] = ['label' => 'Clients', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
-$query = Requests::find()
-        ->where(['client' => $model->id]);
-$dataProvider = new ActiveDataProvider(['query' => $query,]);
+$amountOwing = Requests::find()
+        ->select(['amount'])
+        ->where(['client' => $model->id])
+        ->andWhere(['payment_status' => 0])
+        ->sum('amount');
+
+$clientRequests = $model->requests;
+
+$dataProvider = new ArrayDataProvider([
+    'allModels' => $clientRequests,
+    'sort' => [
+        'attributes' => ['id'],
+    ],
+    'pagination' => [
+        'pageSize' => 20,
+    ],
+        ]);
 
 $clientUsers = $model->clientUsers;
 
@@ -33,8 +49,6 @@ $dataProviderClientUsers = new ArrayDataProvider([
     ],
         ]);
 $cache = Yii::$app->redis;
-//$cache->set("ips","130.90.23.45,34.34.34.45");
-//var_dump($cache->get("ips"));
 ?>
 
 
@@ -43,7 +57,23 @@ $cache = Yii::$app->redis;
         <div class="row align-items-center">
             <div class="col d-flex align-items-center">
                 <div class="col-auto align-self-center">
-                    <h5 class="fs-0 px-3 pt-3 pb-2 mb-0 "><?= $this->title ?></h5>
+                    <?php
+                    if ($model->can_pay == "Yes") {
+                        ?>
+                        <span class="fs-1">
+                            Total request charges ZMW 
+                        </span>
+                        <span class="fs-3 fw-bolder text-danger" data-countup='{"endValue":<?= $amountOwing ?>}'>
+                            0
+                        </span>
+                        <?php
+//                    if (Yii::$app->getUser()->identity->group0->name == "ADMIN" && $amountOwing > 0) {
+//                        echo '<a class="btn btn-success btn-sm p-1" type="button" data-bs-toggle="modal" data-bs-target="#submitInfo">
+//                              Settle ZMW ' . $amountOwing . '
+//                            </a>';
+//                    }
+                    }
+                    ?>
                 </div>
             </div>
             <div class="col-auto">
@@ -99,7 +129,7 @@ $cache = Yii::$app->redis;
                                 'label' => 'Contact person',
                                 'format' => 'raw',
                                 'filter' => false,
-                                'value' => function() use($model) {
+                                'value' => function () use ($model) {
                                     return $model->contact_person_first_name . " " . $model->contact_person_last_name;
                                 }
                             ],
@@ -162,7 +192,8 @@ $cache = Yii::$app->redis;
                         <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-1ada879e-dfbf-4f1f-80c9-26162e1a44ed" id="dom-1ada879e-dfbf-4f1f-80c9-26162e1a44ed">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item"><a class="nav-link active text-uppercase" id="profile-tab" data-bs-toggle="tab" href="#tab-profile" role="tab" aria-controls="tab-profile" aria-selected="true" >Requests</a></li>
-                                <li class="nav-item"><a class="nav-link text-uppercase" id="profile-tab" data-bs-toggle="tab" href="#tab-areasofexpertise" role="tab" aria-controls="tab-areasofexpertise" aria-selected="false">Attributes</a></li>
+                                <li class="nav-item"><a class="nav-link text-uppercase" id="endpoints-tab" data-bs-toggle="tab" href="#tab-endpoints" role="tab" aria-controls="tab-endpoints" aria-selected="false">Allowed Endpoints</a></li>
+                                <li class="nav-item"><a class="nav-link text-uppercase" id="areasofexpertise-tab" data-bs-toggle="tab" href="#tab-areasofexpertise" role="tab" aria-controls="tab-areasofexpertise" aria-selected="false">Attributes</a></li>
                                 <li class="nav-item"><a class="nav-link text-uppercase" id="regdetails-tab" data-bs-toggle="tab" href="#tab-regdetails" role="tab" aria-controls="tab-regdetails" aria-selected="false">Whitelisted IP</a></li>
                                 <li class="nav-item"><a class="nav-link text-uppercase" id="contact-tab" data-bs-toggle="tab" href="#tab-contact" role="tab" aria-controls="tab-contact" aria-selected="false">Users</a></li>
                             </ul>
@@ -240,6 +271,37 @@ $cache = Yii::$app->redis;
                                         ],
                                     ]);
                                     ?>
+                                </div>
+                                <div class="tab-pane fade" id="tab-endpoints" role="tabpanel" aria-labelledby="endpoints-tab">
+                                    <div class="row"> 
+                                        <div class="col-lg-12"> 
+                                            <?php if (User::isUserAllowedTo('Manage clients')) { ?>
+                                                <button class="btn btn-outline-danger btn-sm px-3" type="button" data-bs-toggle="modal" data-bs-target="#endpoints">
+                                                    Update endpoints
+                                                </button>
+                                            <?php } ?>
+                                            <hr>
+                                        </div>
+                                        <div class="col-lg-12">&nbsp; </div>
+                                        <div class="col-lg-12"> 
+                                            <?php
+                                            $arrayEndpoints = [];
+                                            if (!empty($model->clientEndpoints)) {
+                                                echo "<ol><h5>";
+                                                foreach ($model->clientEndpoints as $endpoint) {
+                                                    $endpointName = AvailableEndpoints::findOne(['search_key' => $endpoint['endpoint']]);
+                                                    array_push($arrayEndpoints, $endpoint['endpoint']);
+                                                    echo "<li>" . $endpointName->name . " - " . $endpointName->endpoint . "</li>";
+                                                }
+                                                echo "</h5></ol>";
+                                            } else {
+                                                echo '<div class="col-lg-12 py-3 text-center">'
+                                                . '<span class="badge me-1 py-2 badge-soft-warning fs--1">Click add Update endpoints button above to add/update client endpoints</span>'
+                                                . '</div>';
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-areasofexpertise" role="tabpanel" aria-labelledby="areasofexpertise-tab">
                                     <div class="row"> 
@@ -368,6 +430,72 @@ $cache = Yii::$app->redis;
 </div>
 
 
+<div class="modal fade" id="endpoints" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="endpoints" aria-hidden="true">
+    <div class="modal-dialog modal-xl mt-6" role="document">
+        <div class="modal-content border-0">
+            <div class="position-absolute top-0 end-0 mt-3 me-3 z-index-1">
+                <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="bg-light rounded-top-lg py-3 ps-4 pe-6">
+                    <h4 class="mb-1" id="endpointsLabel">Update allowed client API endpoints</h4>
+                </div>
+                <div class="p-4">
+                    <div class="row">
+
+                        <div class="col-lg-8">
+                            <?php
+                            $endpointModel = new ClientEndpoints();
+                            if (!empty($model->clientEndpoints)) {
+                                $endpointModel->endpoints = $arrayEndpoints;
+                            }
+
+                            $form2 = ActiveForm::begin(
+                                            [
+                                                'action' => 'update-endpoints?id=' . $model->id,
+                                                'type' => ActiveForm::TYPE_VERTICAL,
+                                                'formConfig' =>
+                                                [
+                                                    'showRequiredIndicator' => true,
+                                                ]
+                            ]);
+
+                            echo $form2->field($endpointModel, 'endpoints', [
+                                'enableAjaxValidation' => true,
+                                'labelOptions' => [
+                                    'class' => 'text-dark is-required',
+                                    'style' => "font-size:14px;font-weight:normal;",
+                                ],
+                            ])->checkboxList(\yii\helpers\ArrayHelper::map(AvailableEndpoints::getAvailableEndpoints(), 'search_key', 'name'), [
+                                'custom' => true,
+                                'item' => function ($index, $label, $name, $checked, $value) {
+                                    $checked = $checked ? 'checked' : '';
+                                    return "<label class='form-check-label col-md-6' style='font-size:15px;cursor: pointer;' > "
+                                    . "<input class='form-check-input' type='checkbox' {$checked} name='{$name}' value='{$value}'>&nbsp;&nbsp;{$label} </label>";
+                                },
+                                'separator' => false,
+                                'required' => true,
+                            ])->label(false);
+                            ?>
+                        </div>
+                        <div class="col-lg-4">
+                            <ol>
+                                <li class="fs--1">The selected endpoints are the only endpoints the client will be allowed to access</li>
+                                <li class="fs--1">Tick all required client endpoints</li>
+                                <li class="fs--1">Fields marked with <span class="text-danger">*</span> are required</li>
+                            </ol>
+                        </div>
+                        <div class="col-lg-12">
+                            <hr>
+                            <?= Html::submitButton('Save', ['class' => 'btn ' . Yii::$app->params['btnClass'] . ' btn-md font-weight-bold font-size:18px;']) ?>
+                        </div>
+                    </div>
+                    <?php ActiveForm::end(); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="areaOfExpertise" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="areaOfExpertiseLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl mt-6" role="document">
         <div class="modal-content border-0">

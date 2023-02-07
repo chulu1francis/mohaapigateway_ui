@@ -15,6 +15,7 @@ use \backend\models\ClientAttributes;
 use backend\models\ClientIpWhitelist;
 use frontend\models\PasswordResetRequestForm;
 use \frontend\models\ClientUsers;
+use backend\models\ClientEndpoints;
 
 /**
  * ClientsController implements the CRUD actions for Clients model.
@@ -30,10 +31,10 @@ class ClientsController extends Controller {
                 [
                     'access' => [
                         'class' => AccessControl::className(),
-                        'only' => ['index', 'create', 'update', 'delete', 'view', 'update-attributes', 'whitelist-ip'],
+                        'only' => ['index', 'create', 'update', 'delete', 'view', 'update-attributes', 'whitelist-ip', 'update-endpoints'],
                         'rules' => [
                             [
-                                'actions' => ['index', 'create', 'update', 'delete', 'view', 'update-attributes', 'whitelist-ip'],
+                                'actions' => ['index', 'create', 'update', 'delete', 'view', 'update-attributes', 'whitelist-ip', 'update-endpoints'],
                                 'allow' => true,
                                 'roles' => ['@'],
                             ],
@@ -118,16 +119,16 @@ class ClientsController extends Controller {
                     //We push the client ip to redis server
                     $ipWhitelist = $cache->get("ipWhitelist");
                     if (!empty($ipWhitelist)) {
-                        if(!empty($oldIP)){
-                           $ipWhitelist= str_replace($oldIP.',', "", $ipWhitelist);
+                        if (!empty($oldIP)) {
+                            $ipWhitelist = str_replace($oldIP . ',', "", $ipWhitelist);
                         }
-                        
+
                         if (!str_contains($ipWhitelist, $model->ip)) {
-                            $ipWhitelist .= $model->ip.",";
+                            $ipWhitelist .= $model->ip . ",";
                             $cache->set("ipWhitelist", "$ipWhitelist");
                         }
                     } else {
-                        $ip=$model->ip.",";
+                        $ip = $model->ip . ",";
                         $cache->set("ipWhitelist", "$ip");
                     }
                 } else {
@@ -145,6 +146,52 @@ class ClientsController extends Controller {
         }
     }
 
+    /**
+     * Update client endpoints
+     * @param type $id
+     * @return type
+     */
+    public function actionUpdateEndpoints($id) {
+        if (User::isUserAllowedTo("Manage clients")) {
+            $model = new ClientEndpoints();
+            if (Yii::$app->request->isAjax) {
+                $model->load(Yii::$app->request->post());
+                return Json::encode(\yii\widgets\ActiveForm::validate($model));
+            }
+
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post())) {
+                    $cache = Yii::$app->redis;
+                    $endpoints = "";
+                    $model::deleteAll(['client' => $id]);
+
+                    foreach ($model->endpoints as $endpoint) {
+                        $clientEndpointModel = new ClientEndpoints();
+                        $clientEndpointModel->client = $id;
+                        $clientEndpointModel->endpoint = $endpoint;
+                        $clientEndpointModel->created_by = Yii::$app->user->id;
+                        $clientEndpointModel->updated_by = Yii::$app->user->id;
+                        $clientEndpointModel->save(false);
+                        $endpoints .= $endpoint . ",";
+                    }
+
+                    $cache->set($id . "-endpoints", "$endpoints");
+
+                    Yii::$app->session->setFlash('success', 'Client api endpoints have been updated successfully');
+                }
+            }
+            return $this->redirect(['view', 'id' => $id]);
+        } else {
+            Yii::$app->session->setFlash('error', 'You are not authorised to perform that action. This action will be reported');
+            return $this->redirect(['home/index']);
+        }
+    }
+
+    /**
+     * Update client attributes
+     * @param type $id
+     * @return type
+     */
     public function actionUpdateAttributes($id) {
         if (User::isUserAllowedTo("Manage clients")) {
             $model = new ClientAttributes();
@@ -286,6 +333,10 @@ class ClientsController extends Controller {
     public function actionUpdate($id) {
         if (User::isUserAllowedTo("Manage clients")) {
             $model = $this->findModel($id);
+             if (Yii::$app->request->isAjax) {
+                $model->load(Yii::$app->request->post());
+                return Json::encode(\yii\widgets\ActiveForm::validate($model));
+            }
 
             if ($this->request->isPost && $model->load($this->request->post())) {
                 $model->updated_by = Yii::$app->user->identity->id;

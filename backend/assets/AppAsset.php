@@ -25,6 +25,7 @@ class AppAsset extends AssetBundle {
         'vendors/popper/popper.min.js',
         'vendors/anchorjs/anchor.min.js',
         'vendors/is/is.min.js',
+        'vendors/countup/countUp.umd.js',
         'vendors/fontawesome/all.min.js',
         'vendors/lodash/lodash.min.js',
         'vendors/list.js/list.min.js',

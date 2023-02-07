@@ -5,6 +5,7 @@ namespace backend\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\Requests;
+use Yii;
 
 /**
  * RequestsSearch represents the model behind the search form of `backend\models\Requests`.
@@ -41,7 +42,7 @@ class RequestsSearch extends Requests
      */
     public function search($params)
     {
-        $query = Requests::find();
+        $query = Requests::find()->cache(Yii::$app->params['cacheDuration']);
 
         // add conditions that should always apply here
 

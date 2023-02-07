@@ -3,27 +3,35 @@
 namespace backend\models;
 
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "client_attributes".
+ * This is the model class for table "client_endpoints".
  *
  * @property int $id
  * @property int $client
- * @property string $attribute
+ * @property string $endpoint
  * @property string|null $created_at
  * @property string|null $updated_at
  * @property int|null $created_by
  * @property int|null $updated_by
  *
  * @property Clients $client0
+ * @property AauthUsers $createdBy
+ * @property AauthUsers $updatedBy
  */
-class ClientAttributes extends ActiveRecord {
-
-    public $attributes;
-
+class ClientEndpoints extends ActiveRecord
+{
+     public $endpoints;
     /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return 'client_endpoints';
+    }
+    
+      /**
      * {@inheritdoc}
      */
     public function behaviors() {
@@ -42,20 +50,16 @@ class ClientAttributes extends ActiveRecord {
     /**
      * {@inheritdoc}
      */
-    public static function tableName() {
-        return 'client_attributes';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rules() {
+    public function rules()
+    {
         return [
-            [['client', 'attribute', 'attributes'], 'required'],
+            [['client', 'endpoint','endpoints'], 'required'],
             [['client', 'created_by', 'updated_by'], 'default', 'value' => null],
             [['client', 'created_by', 'updated_by'], 'integer'],
-            [['attribute'], 'string'],
+            [['endpoint'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
+            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => AauthUsers::class, 'targetAttribute' => ['created_by' => 'id']],
+            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => AauthUsers::class, 'targetAttribute' => ['updated_by' => 'id']],
             [['client'], 'exist', 'skipOnError' => true, 'targetClass' => Clients::class, 'targetAttribute' => ['client' => 'id']],
         ];
     }
@@ -63,11 +67,12 @@ class ClientAttributes extends ActiveRecord {
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => 'ID',
             'client' => 'Client',
-            'attribute' => 'Attribute',
+            'endpoint' => 'Endpoint',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
@@ -80,8 +85,28 @@ class ClientAttributes extends ActiveRecord {
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getClient0() {
+    public function getClient0()
+    {
         return $this->hasOne(Clients::class, ['id' => 'client']);
     }
 
+    /**
+     * Gets query for [[CreatedBy]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCreatedBy()
+    {
+        return $this->hasOne(AauthUsers::class, ['id' => 'created_by']);
+    }
+
+    /**
+     * Gets query for [[UpdatedBy]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUpdatedBy()
+    {
+        return $this->hasOne(AauthUsers::class, ['id' => 'updated_by']);
+    }
 }
