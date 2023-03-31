@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="col-lg-12 text-center">&nbsp;</div>
     <div class="col-lg-12 text-center fs--1">
-        <h5>Reset <strong><?=$organisation?> Organisation</strong> account password</h5>
+        <h5>Reset account password</h5>
     </div>
     <hr>
 </div>

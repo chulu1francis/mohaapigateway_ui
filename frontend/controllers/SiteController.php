@@ -311,11 +311,12 @@ class SiteController extends Controller {
      * @throws \yii\base\Exception
      */
     public function actionResetPassword($token) {
-        $user = Organisations::findByPasswordResetToken($token);
+        $user = ClientUsers::findByPasswordResetToken($token);
         if (!$user) {
-            Yii::$app->session->setFlash('error', 'Organisation account password reset token expired. Contact  support!');
+            Yii::$app->session->setFlash('error', 'Password reset token expired. Contact  support!');
             return $this->redirect(['login']);
         }
+        
         try {
             $this->layout = 'resetpassword';
             $model = new ResetPasswordForm($token);
@@ -332,7 +333,6 @@ class SiteController extends Controller {
         $this->layout = 'resetpassword';
         return $this->render('resetPassword', [
                     'model' => $model,
-                    'organisation' => $user->name
         ]);
     }
 

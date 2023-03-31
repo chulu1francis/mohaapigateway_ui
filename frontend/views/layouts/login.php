@@ -58,13 +58,16 @@ AppAsset::register($this);
                         <div class="card overflow-hidden z-index-1">
                             <div class="card-body p-0">
                                 <div class="row g-0 h-100">
-                                    <div class="col-md-5 text-center bg-primary">
+                                    <div class="col-md-5 text-center bg-success">
                                         <div class="position-relative p-4 pt-md-5 pb-md-7 light">
                                             <div class="z-index-1 position-relative">
                                                 <span class="link-light mb-4 font-sans-serif fs-2 d-inline-block fw-bolder">
                                                     <?= Yii::$app->params['siteName'] ?>
                                                 </span>
-                                                <p class="opacity-75 text-white">With the power of Falcon, you can now focus only on functionaries for your digital products, while leaving the UI design on us!</p>
+                                                <p class="opacity-75 text-white">
+                                                    The INRIS API manager gives you access to the INRIS platform where you can query a citizens identity data 
+                                                    using a citizens NRC number.
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="mt-3 mb-4 mt-md-4 mb-md-5 light">
@@ -73,7 +76,10 @@ AppAsset::register($this);
                                                     Click here to register an account 
                                                 </a>
                                             </p>-->
-                                            <p class="mb-0 mt-4 mt-md-5 fs--1 fw-semi-bold text-white opacity-75">Read our <a class="text-decoration-underline text-white" href="#!">terms</a> and <a class="text-decoration-underline text-white" href="#!">conditions </a></p>
+                                            <p class="mb-0 mt-4 mt-md-5 fs--1 fw-semi-bold text-white opacity-75">
+                                                Read our <a class="text-decoration-underline text-white" href="#!">terms</a> and 
+                                                <a class="text-decoration-underline text-white" href="">conditions </a>
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="col-md-7 d-flex flex-center">

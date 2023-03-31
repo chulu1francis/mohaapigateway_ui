@@ -7,7 +7,7 @@ use yii\base\Model;
 use yii\base\Exception;
 use backend\models\Users;
 use Yii;
-use frontend\models\Organisations;
+use frontend\models\ClientUsers;
 
 /**
  * Password reset form
@@ -34,7 +34,7 @@ class ResetPasswordForm extends Model {
         if (empty($token) || !is_string($token)) {
             throw new Exception("Your token has expired. Please request for a new one again!");
         }
-        $this->_user = Organisations::findByPasswordResetToken($token);
+        $this->_user = ClientUsers::findByPasswordResetToken($token);
         if (!empty($this->_user)) {
             $this->username = $this->_user->email;
         }

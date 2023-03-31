@@ -129,14 +129,14 @@ td .es-button-border-3:hover {
                       <td align="left" style="padding:0;Margin:0;padding-top:15px;padding-bottom:15px">
                           <h1 style="Margin:0;line-height:19px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:16px;font-style:normal;font-weight:normal;color:#333333">
                               <strong>
-                                  Hello <?=$user->name." organisation"?>!<br>
+                                  Hello <?=$user->first_name?>!<br>
                               </strong>
                           </h1></td>
                      </tr>
                      <tr style="border-collapse:collapse">
                       <td align="center" style="padding:0;Margin:0;padding-right:35px">
                           <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;font-size:14px">
-                             There was a request to change the organisation <?=Yii::$app->params['siteName']?> account password.<br>
+                             There was a request to change your <?=Yii::$app->params['siteName']?> account password.<br>
                              If you did not make this request, just ignore this email. Otherwise, please click the button below to change the password
                           </p>
                       </td>

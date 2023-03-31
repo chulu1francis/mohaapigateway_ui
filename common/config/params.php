@@ -1,15 +1,15 @@
 <?php
 
 return [
-    'adminEmail' => 'admin@ausoap.com',
+    'adminEmail' => 'admin@gov.zm',
     'supportEmail' => 'allapps.noreply@gmail.com',
     'senderEmail' => 'allapps.noreply@gmail.com',
     'senderName' => 'INRIS API Gateway',
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
     'siteName' => "INRIS API Gateway",
-    'institutionSupportContact' => "+260978981576",
-    'institutionSupportEmail' => "support@gov.org",
+    'institutionSupportContact' => "+260975981190",
+    'institutionSupportEmail' => "support@gov.zm",
     'institution' => "Ministry of Home Affairs",
     'institutionShortName' => "MOHA",
     'institutionDescription' => "Government of the Republic of Zambia, Minstry of Home Affairs(MOHA)",
@@ -21,6 +21,8 @@ return [
     'bsVersion' => '5',
     "host" => "http://localhost",
     "port" => "4005",
+//    "host" => "http://10.21.8.80",
+//    "port" => "80",
     "wrongPasswordCounter" => 3,
     'cacheDuration' => 60,
     'specialPermissionExpiry' => 24, //hours
