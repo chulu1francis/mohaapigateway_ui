@@ -65,7 +65,7 @@ AppAsset::register($this);
                                                     <?= Yii::$app->params['siteName'] ?>
                                                 </span>
                                                 <p class="opacity-75 text-white">
-                                                    The INRIS API manager gives you access to the INRIS platform where you can query a citizens identity data 
+                                                    The DNRPC INRIS API manager gives you access to the INRIS platform where you can query a citizens identity data 
                                                     using a citizens NRC number.
                                                 </p>
                                             </div>
@@ -86,10 +86,10 @@ AppAsset::register($this);
                                         <div class="p-4 p-md-5 flex-grow-1">
                                             <div class="row flex-between-center">
                                                 <div class="col-lg-12 text-center pb-2">
-                                                    <img class="me-2" src="<?= Url::to('@web/img/logo.png') ?>" alt="" height="120" width="120" />
+                                                    <img class="me-2" src="<?= Url::to('@web/img/COA.jpeg') ?>" alt="" height="120" width="120" />
                                                 </div>
                                                 <div class=" text-center">
-                                                    <h3>Ministry of Home Affairs</h3>
+                                                    <h3>DNRPC INRIS API Manager</h3>
                                                 </div>
                                                 <div class=" text-center">
                                                     <h4>Client Login</h4>

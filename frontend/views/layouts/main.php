@@ -80,7 +80,7 @@ JS;
                         </div>
                         <a class="navbar-brand" target="" href="<?= Url::toRoute('home/index') ?>">
                             <div class="d-flex align-items-center py-3">
-                                <img class="me-2" src="<?= Url::to('@web/img/logo.png') ?>" alt="" width="40" />
+                                <img class="me-2" src="<?= Url::to('@web/img/COA.jpeg') ?>" alt="" width="40" />
                                 <span class="font-sans-serif text-secondary fs-2">
                                     <?= Yii::$app->params['siteName'] ?> 
                                 </span>
@@ -162,12 +162,12 @@ JS;
                             <li class="nav-item dropdown">
                                 <a class="nav-link pe-0 ps-2" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <div class="avatar avatar-xl">
-<?php
-$orgLogo = '@web/img/icon.png';
-if (!empty($session->get('logo'))) {
-    $orgLogo = '@web/uploads/' . $session->get('logo');
-}
-?>
+                                        <?php
+                                        $orgLogo = '@web/img/icon.png';
+                                        if (!empty($session->get('logo'))) {
+                                            $orgLogo = '@web/uploads/' . $session->get('logo');
+                                        }
+                                        ?>
                                         <?= Html::img($orgLogo, ['class' => 'rounded-circle']); ?>
                                     </div>
                                 </a>
@@ -213,25 +213,25 @@ if (!empty($session->get('logo'))) {
 
                     <div class="card bg-light my-3">
                         <div class="card-body p-1 fs--3" style="margin-left: 10px;font-size: 15px;">
-<?=
-yii\bootstrap5\Breadcrumbs::widget([
-    'homeLink' => ['label' => 'Home',
-        'url' => Yii::$app->getHomeUrl() . '/home/index'],
-    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-])
-?>
+                            <?=
+                            yii\bootstrap5\Breadcrumbs::widget([
+                                'homeLink' => ['label' => 'Home',
+                                    'url' => Yii::$app->getHomeUrl() . '/home/index'],
+                                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                            ])
+                            ?>
                         </div>
                     </div>
 
-<?= $content ?>
+                    <?= $content ?>
 
                     <!--                    <footer class="footer">
                                             <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
                                                 <div class="col-12 col-sm-auto text-center">
-                                                    <p class="mb-0 text-600"><?php //Yii::$app->params['institution']    ?>  
+                                                    <p class="mb-0 text-600"><?php //Yii::$app->params['institution']     ?>  
                                                         <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 
-                                                        2022 &copy; <a target="_blank" href="<?php //Yii::$app->params['website']    ?>">
-<?php //Yii::$app->params['institutionShortName']   ?></a></p>
+                                                        2022 &copy; <a target="_blank" href="<?php //Yii::$app->params['website']     ?>">
+                    <?php //Yii::$app->params['institutionShortName']   ?></a></p>
                                                 </div>
                                             </div>
                                         </footer>-->
@@ -262,10 +262,10 @@ yii\bootstrap5\Breadcrumbs::widget([
                             <button type="button" class="btn btn-falcon-danger btn-sm" data-bs-dismiss="modal">
                                 <span class="fas fa-times-circle me-1" data-fa-transform="shrink-3"></span> Cancel
                             </button>
-<?=
-Html::a('<span class="fas fa-power-off me-1" data-fa-transform="shrink-3"></span> Logout', ['site/logout'], ['data' => ['method' => 'POST'], 'id' => 'logout',
-    'class' => 'btn ' . Yii::$app->params['btnClass'] . ' btn-sm'])
-?>
+                            <?=
+                            Html::a('<span class="fas fa-power-off me-1" data-fa-transform="shrink-3"></span> Logout', ['site/logout'], ['data' => ['method' => 'POST'], 'id' => 'logout',
+                                'class' => 'btn ' . Yii::$app->params['btnClass'] . ' btn-sm'])
+                            ?>
 
                         </div>
                     </div>
@@ -273,63 +273,63 @@ Html::a('<span class="fas fa-power-off me-1" data-fa-transform="shrink-3"></span
             </div>
         </div>
 
-<?php
-if (Yii::$app->session->getFlash('success')) {
-    echo kartik\widgets\Growl::widget([
-        'type' => kartik\widgets\Growl::TYPE_SUCCESS,
-        'title' => 'Success!',
-        'icon' => 'fas fa-check-circle fa-2x',
-        'body' => Yii::$app->session->getFlash('success'),
-        'progressBarOptions' => ['class' => 'progress-bar-success'],
-        'showSeparator' => true,
-        'delay' => 50,
-        'pluginOptions' => [
-            'showProgressbar' => true,
-            'placement' => [
-                'from' => 'bottom',
-                'align' => 'center',
-            ]
-        ]
-    ]);
-}
+        <?php
+        if (Yii::$app->session->getFlash('success')) {
+            echo kartik\widgets\Growl::widget([
+                'type' => kartik\widgets\Growl::TYPE_SUCCESS,
+                'title' => 'Success!',
+                'icon' => 'fas fa-check-circle fa-2x',
+                'body' => Yii::$app->session->getFlash('success'),
+                'progressBarOptions' => ['class' => 'progress-bar-success'],
+                'showSeparator' => true,
+                'delay' => 50,
+                'pluginOptions' => [
+                    'showProgressbar' => true,
+                    'placement' => [
+                        'from' => 'bottom',
+                        'align' => 'center',
+                    ]
+                ]
+            ]);
+        }
 
-if (Yii::$app->session->getFlash('error')) {
-    echo kartik\widgets\Growl::widget([
-        'type' => kartik\widgets\Growl::TYPE_DANGER,
-        'title' => 'Error!',
-        'icon' => 'fas fa-times-circle  fa-2x',
-        'body' => Yii::$app->session->getFlash('error'),
-        'showSeparator' => true,
-        'delay' => 50,
-        'pluginOptions' => [
-            'showProgressbar' => true,
-            'placement' => [
-                'from' => 'bottom',
-                'align' => 'center',
-            ]
-        ]
-    ]);
-}
+        if (Yii::$app->session->getFlash('error')) {
+            echo kartik\widgets\Growl::widget([
+                'type' => kartik\widgets\Growl::TYPE_DANGER,
+                'title' => 'Error!',
+                'icon' => 'fas fa-times-circle  fa-2x',
+                'body' => Yii::$app->session->getFlash('error'),
+                'showSeparator' => true,
+                'delay' => 50,
+                'pluginOptions' => [
+                    'showProgressbar' => true,
+                    'placement' => [
+                        'from' => 'bottom',
+                        'align' => 'center',
+                    ]
+                ]
+            ]);
+        }
 
-if (Yii::$app->session->getFlash('warning')) {
-    echo kartik\widgets\Growl::widget([
-        'type' => kartik\widgets\Growl::TYPE_WARNING,
-        'title' => 'Warning!',
-        'icon' => 'fas fa-exclamation-circle  fa-2x',
-        'body' => Yii::$app->session->getFlash('warning'),
-        'showSeparator' => true,
-        'delay' => 50,
-        'pluginOptions' => [
-            'showProgressbar' => true,
-            'placement' => [
-                'from' => 'bottom',
-                'align' => 'center',
-            ]
-        ]
-    ]);
-}
-$this->endBody();
-?>
+        if (Yii::$app->session->getFlash('warning')) {
+            echo kartik\widgets\Growl::widget([
+                'type' => kartik\widgets\Growl::TYPE_WARNING,
+                'title' => 'Warning!',
+                'icon' => 'fas fa-exclamation-circle  fa-2x',
+                'body' => Yii::$app->session->getFlash('warning'),
+                'showSeparator' => true,
+                'delay' => 50,
+                'pluginOptions' => [
+                    'showProgressbar' => true,
+                    'placement' => [
+                        'from' => 'bottom',
+                        'align' => 'center',
+                    ]
+                ]
+            ]);
+        }
+        $this->endBody();
+        ?>
     </body>
 </html>
 <?php

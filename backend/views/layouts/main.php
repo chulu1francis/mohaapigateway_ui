@@ -79,7 +79,7 @@ JS;
                         </div>
                         <a class="navbar-brand" target="" href="<?= Url::toRoute('home/index') ?>">
                             <div class="d-flex align-items-center py-3">
-                                <img class="me-2" src="<?= Url::to('@web/img/logo.png') ?>" alt="" width="40" />
+                                <img class="me-2" src="<?= Url::to('@web/img/COA.jpeg') ?>" alt="" width="40" />
                                 <span class="font-sans-serif text-secondary fs-2">
                                     <?= Yii::$app->params['siteName'] ?> 
                                 </span>

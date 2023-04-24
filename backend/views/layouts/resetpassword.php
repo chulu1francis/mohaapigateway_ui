@@ -67,7 +67,7 @@ AppAsset::register($this);
                             <div class="card-body p-5 p-sm-3">
                                 <div class="row flex-between-center">
                                     <div class="col-lg-12 text-center">
-                                        <img class="me-2" src="<?= Url::to('@web/img/logo.png') ?>" alt="" height="100" width="100" />
+                                        <img class="me-2" src="<?= Url::to('@web/img/COA.jpeg') ?>" alt="" height="100" width="100" />
                                     </div>
                                     <div class="col-lg-12 text-center">&nbsp;</div>
                                     <div class="col-lg-12 text-center fs--1">
