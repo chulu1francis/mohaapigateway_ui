@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             $form->field($model, 'password', [
                 'addon' => ['prepend' => ['content' => ' <span class="fas fa-lock"></span>']]
             ])->passwordInput(['class' => 'form-control ', 'autocorrect' => 'off', 'autocapitalize' => 'none',
-                'autofocus' => false, 'placeholder' => 'Password',])->label(false);
+                'autofocus' => false, 'placeholder' => 'New Password',])->label(false);
             ?>
         </div>
         <div class="form-group">
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
         </div>
         <div class="form-group">
-            <?= Html::submitButton('Reset', ['class' => 'btn btn-sm ' . Yii::$app->params['btnClass'] . ' me-1 mb-1 d-block w-100 mt-3', 'name' => 'login-button']) ?>
+            <?= Html::submitButton('Continue', ['class' => 'btn btn-md ' . Yii::$app->params['btnClass'] . ' me-1 mb-1 d-block w-100 mt-3', 'name' => 'login-button']) ?>
         </div>
         <div class="form-group mt-2 mb-0 row">
             <div class="col-12 mt-2">

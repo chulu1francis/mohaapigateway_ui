@@ -62,13 +62,15 @@ $fullExportMenu = "";
                 ],
                 [
                     'label' => 'Rights',
+                    'options' => ['style' => 'width:75%;'],
+                    'format' => 'raw',
                     'value' => function ($model) {
                         $rightsArray = AauthPermToGroup::getGroupPermissions($model->id);
                         return implode(", ", $rightsArray);
                     }
                 ],
                 ['class' => ActionColumn::className(),
-                    'options' => ['style' => 'width:100px;', 'class' => "btn-group btn-group-sm"],
+                    'options' => ['style' => 'width:150px;', 'class' => "btn-group btn-group-sm"],
                     'template' => '{view}{update}{delete}',
                     'buttons' => [
                         'view' => function ($url, $model) {

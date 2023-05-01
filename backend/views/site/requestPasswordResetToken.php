@@ -22,19 +22,19 @@ $form = ActiveForm::begin([
         ]);
 ?>
 
-<p class="text-secondary fs--1 text-center">
-    Enter your registered email.<br> A link to reset your password will be sent there.
+<p class="text-secondary fs--1 text-left">
+    Enter your account email address and we will send you a link to reset your password.
 </p>
 <div class="form-group mb-3">
     <?=
     $form->field($model, 'email', ['enableAjaxValidation' => true,
         'addon' => ['prepend' => ['content' => ' <span class="fas fa-envelope"></span>']]
-    ])->textInput(['autofocus' => false, 'placeholder' => 'Enter registered email',])->label(false);
+    ])->textInput(['autofocus' => false, 'placeholder' => 'Email address',])->label(false);
     ?>
 </div>
 
 <div class="form-group text-center">
-    <?= Html::submitButton('Request', ['class' => 'btn btn-sm ' . Yii::$app->params['btnClass'] . ' me-1 mb-1 d-block w-100 mt-3', 'name' => 'login-button']) ?>
+    <?= Html::submitButton('Continue', ['class' => 'btn btn-md ' . Yii::$app->params['btnClass'] . ' me-1 mb-1 d-block w-100 mt-3', 'name' => 'login-button']) ?>
 </div>
 
 <?php ActiveForm::end(); ?>

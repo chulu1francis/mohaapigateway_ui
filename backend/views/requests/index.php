@@ -61,13 +61,12 @@ $fullExportMenu = "";
                 ],
                 [
                     'attribute' => 'status',
-                    'label' => 'Status',
                     'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
                     'filterWidgetOptions' => [
                         'pluginOptions' => ['allowClear' => true],
                     ],
                     'filter' => [200 => 'Success', 201 => 'Failed'],
-                    'filterInputOptions' => ['prompt' => 'Filter by Status', 'class' => 'form-control', 'id' => null],
+                    'filterInputOptions' => ['prompt' => 'Filter', 'class' => 'form-control', 'id' => null],
                     'value' => function ($model) {
                         $str = "";
                         if ($model->status == 200) {
@@ -85,7 +84,6 @@ $fullExportMenu = "";
                 ],
                 [
                     'attribute' => 'payment_status',
-                    'label' => 'Payment status',
                     'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
                     'filterWidgetOptions' => [
                         'pluginOptions' => ['allowClear' => true],

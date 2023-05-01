@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="row g-3 mb-3">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <div class="card mb-3">
             <div class="card-header position-relative min-vh-25 mb-7">
                 <div class="bg-holder rounded-3 rounded-bottom-0" style="background-image:url(<?= Url::to('@web/img/bg.jpg') ?>);">

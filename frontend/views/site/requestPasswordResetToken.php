@@ -23,7 +23,7 @@ $form = ActiveForm::begin([
 ?>
 
 <p class="text-secondary fs--5 text-center">
-    Enter a registered email.<br> A link to reset the password will be sent there.
+    Enter your email address and we will send you a link to reset the password.
 </p>
 <div class="form-group mb-3">
     <?=

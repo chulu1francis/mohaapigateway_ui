@@ -16,6 +16,7 @@ use backend\models\ClientIpWhitelist;
 use frontend\models\PasswordResetRequestForm;
 use \frontend\models\ClientUsers;
 use backend\models\ClientEndpoints;
+use backend\models\Requests;
 
 /**
  * ClientsController implements the CRUD actions for Clients model.
@@ -333,7 +334,7 @@ class ClientsController extends Controller {
     public function actionUpdate($id) {
         if (User::isUserAllowedTo("Manage clients")) {
             $model = $this->findModel($id);
-             if (Yii::$app->request->isAjax) {
+            if (Yii::$app->request->isAjax) {
                 $model->load(Yii::$app->request->post());
                 return Json::encode(\yii\widgets\ActiveForm::validate($model));
             }
@@ -370,14 +371,53 @@ class ClientsController extends Controller {
      */
     public function actionDelete($id) {
         if (User::isUserAllowedTo("Manage clients")) {
+            $model = $this->findModel($id);
+            $name = $model->name;
+            $requestModel = Requests::findOne(['client' => $id, 'status' => 200]);
+
+            if (!empty($requestModel)) {
+                Yii::$app->session->setFlash('error', 'Client:' . $name . ' has successful requests hence could not be removed. Please just deactivate their account!');
+                return $this->redirect(['index']);
+            }
+
             try {
-                $model = $this->findModel($id);
-                $name = $model->name;
+                //Lets remove all details from all tables
+                //1. Allowed endpoints
+                $cache = Yii::$app->redis;
+
+                if (!empty($model->clientEndpoints)) {
+                    foreach ($model->clientEndpoints as $endpoint) {
+                        $endpoint->delete();
+                    }
+                    $cache->remove($id . "-endpoints");
+                }
+
+                //2. Attributes
+                if (!empty($model->clientAttributes)) {
+                    foreach ($model->clientAttributes as $attribute) {
+                        $attribute->delete();
+                    }
+                }
+
+                //3. IP address
+                $ipAddress = ClientIpWhitelist::findOne(["client" => $id]);
+                if (!empty($ipAddress)) {
+                    $ipAddress->delete();
+                }
+
+                //4. Users
+                if (!empty($model->clientUsers)) {
+                    foreach ($model->clientUsers as $clientUser) {
+                        $clientUser->delete();
+                    }
+                }
+
                 if ($model->delete()) {
                     Yii::$app->session->setFlash('success', 'Client:' . $name . ' was successfully removed ');
                 } else {
                     Yii::$app->session->setFlash('error', 'Client:' . $name . ' could not be removed ');
                 }
+
                 return $this->redirect(['index']);
             } catch (\yii\db\IntegrityException $ex) {
                 Yii::$app->session->setFlash('error', 'Client could not be removed. Possibly client is attached to a record in the system.'

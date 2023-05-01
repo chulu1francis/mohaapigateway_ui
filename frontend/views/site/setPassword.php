@@ -17,7 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="col-lg-12 text-center">&nbsp;</div>
     <div class="col-lg-12 text-center fs--1">
-        <h5> <strong><?=$client->name?> </strong>Client user account activation</h5>
+        <h4> <strong><?=$client->name?> </strong></h4>
+        <h5>User account activation</h5>
     </div>
     <hr>
 </div>

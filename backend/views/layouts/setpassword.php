@@ -72,7 +72,8 @@ AppAsset::register($this);
                                     </div>
                                     <div class="col-lg-12 text-center">&nbsp;</div>
                                     <div class="col-lg-12 text-center fs--1">
-                                        <h3>Set <?= Yii::$app->params['siteName'] ?> account password</h3>
+                                        <h3><?= Yii::$app->params['siteName'] ?></h3>
+                                        <h4>Set account password</h4>
                                     </div>
                                     <hr>
                                 </div>

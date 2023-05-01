@@ -58,15 +58,15 @@ class Requests extends \yii\db\ActiveRecord
             'id' => 'ID',
             'client' => 'Client',
             'request' => 'Request',
-            'status' => '200=Success, 201=failed',
+            'status' => 'Status',
             'amount' => 'Amount charged',
-            'payment_status' => 'Payment Status',
+            'payment_status' => 'Payment status',
             'path' => 'Path',
-            'source_ip' => 'Source Ip',
-            'source_agent' => 'Source Agent',
+            'source_ip' => 'Source ip',
+            'source_agent' => 'Source agent',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'proof_of_payment' => 'Proof Of Payment',
+            'proof_of_payment' => 'Proof of payment',
         ];
     }
 
